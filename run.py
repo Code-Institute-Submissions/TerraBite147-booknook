@@ -1,3 +1,7 @@
+# imports
+import os
+
+
 # Data structure for the library
 library = [
     {
@@ -19,6 +23,10 @@ library = [
         "rating": None,
     },
 ]
+
+def clear_screen():
+    """Clear the screen depending on the operating system."""
+    os.system("cls" if os.name == "nt" else "clear")
 
 def main_menu():
     """Displays Main Menu"""
@@ -45,6 +53,7 @@ def main_menu():
             print("Invalid choice. Please try again.")
 
 def view_library():
+    clear_screen()
     """Displays the library"""
     print("\n--- Library ---")
     if len(library) == 0:
@@ -54,6 +63,8 @@ def view_library():
             read_status = "Read" if book['read'] else "Unread"
             rating = book['rating'] if book['rating'] else "Unrated"
             print(f"Title: {book['title']}, Author: {book['author']}, Status: {read_status}, Rating: {rating}\n")
+    input("Press enter to return to main menu.\n")        
+                  
 
 def search_for_book():
     #placehholder 
@@ -63,6 +74,7 @@ def search_for_book():
 
 def about_library_system():
     """About the library system."""
+    clear_screen()
     print("\n--- About ---")
     print(
         "The BookNook is a Personal Library Management System allows you to manage your "
@@ -74,6 +86,8 @@ def about_library_system():
     print("  - Rate them")
     print("  - Mark them as read")
     print("Stay organized and keep track of your reading with ease!")
+    input("Press enter to return to main menu.\n")  
+
 
 
 
