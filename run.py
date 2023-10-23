@@ -12,10 +12,34 @@ library = [
         "read": False,
         "rating": None,
     },
-        {
+    {
         "title": "The Great Gatsby",
         "author": "F. Scott Fitzgerald",
         "read": False,
         "rating": None,
     },
 ]
+
+def main_menu():
+    """Displays Main Menu"""
+    while True:
+        print("\n--- Personal Library Management System ---")
+        print("1. View Library")
+        print("2. Search for a Book")
+        print("3. About")
+        print("4. Exit")
+
+        choice = input("Enter your choice: \n")
+        if choice == "1":
+            view_library()
+        elif choice == "2":
+            search_for_book()
+        elif choice == "3":
+            about_library_system()
+        elif choice == "4":
+            print(
+                "Exiting... Thank you for using the Personal Library Management System!"
+            )
+            break
+        else:
+            print("Invalid choice. Please try again.")
