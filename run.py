@@ -5,16 +5,16 @@ import os
 # Data structure for the library
 library = [
     {
-        "title": "To Kill a Mockingbird",
-        "author": "Harper Lee",
-        "read": True,
-        "rating": 5,
-    },
-    {
         "title": "Pride and Prejudice",
         "author": "Jane Austen",
         "read": False,
         "rating": None,
+    },
+    {
+        "title": "To Kill a Mockingbird",
+        "author": "Harper Lee",
+        "read": True,
+        "rating": 5,
     },
     {
         "title": "The Great Gatsby",
@@ -24,9 +24,11 @@ library = [
     },
 ]
 
+
 def clear_screen():
     """Clear the screen depending on the operating system."""
     os.system("cls" if os.name == "nt" else "clear")
+
 
 def main_menu():
     """Displays Main Menu"""
@@ -39,7 +41,7 @@ def main_menu():
 
         choice = input("Enter your choice: \n")
         if choice == "1":
-            view_library()
+            view_library(library)
         elif choice == "2":
             search_for_book()
         elif choice == "3":
@@ -52,7 +54,8 @@ def main_menu():
         else:
             print("Invalid choice. Please try again.")
 
-def view_library():
+
+def view_library(library):
     clear_screen()
     """Displays the library"""
     print("\n--- Library ---")
@@ -60,23 +63,105 @@ def view_library():
         print("The library is empty.")
     else:
         for book in library:
-            read_status = "Read" if book['read'] else "Unread"
-            rating = book['rating'] if book['rating'] else "Unrated"
-            print(f"Title: {book['title']}, Author: {book['author']}, Status: {read_status}, Rating: {rating}\n")
-    input("Press enter to return to main menu.\n")
+            read_status = "Read" if book["read"] else "Unread"
+            rating = book["rating"] if book["rating"] else "Unrated"
+            print(
+                f"Title: {book['title']}, Author: {book['author']}, Status: {read_status}, Rating: {rating}\n"
+            )
 
     # Options after displaying the library
     print("\nOptions:")
     print("1. Sort")
     print("2. Add")
     print("3. Remove")
-    print("4. Return to main menu")        
-                  
+    print("4. Return to main menu")
+
+    choice = input("\nEnter your choice: \n")
+    if choice == "1":
+        sort_options(library)
+    elif choice == "2":
+        print("add_book() placeholder")
+    elif choice == "3":
+        # Call remove function here once implemented
+        pass
+    elif choice == "4":
+        return
+    else:
+        print("Invalid choice!")
+
+def sort_options(library):
+    """Sorts the library"""
+    print("\n--- Sort Options ---")
+    print("1. Sort by title")
+    print("2. Sort by author")
+    print("3. Sort by read status")
+    print("4. Sort by rating")
+    print("5. Return to main menu")
+
+    choice = input("\nEnter your choice: \n")
+    sort_criteria = {"1": "title", "2": "author", "3": "rating", "4": "read"}
+
+    if choice in sort_criteria:
+        sorted_library = sort_library(library, sort_criteria[choice])
+        # Display the sorted library again
+        for book in sorted_library:
+            read_status = "Read" if book["read"] else "Unread"
+            rating = book["rating"] if book["rating"] else "Unrated"
+            print(
+                f"Title: {book['title']}, Author: {book['author']}, Status: {read_status}, Rating: {rating}"
+            )
+    elif choice == "5":
+        return
+    else:
+        print("Invalid choice!")
+
+def sort_library(library, criteria):
+    """Sorts the library based on the criteria."""
+    if criteria == "title":
+        return sorted(library, key=lambda x: x["title"])
+    elif criteria == "author":
+        return sorted(library, key=lambda x: x["author"])
+    elif criteria == "rating":
+        return sorted(
+            library, key=lambda x: (x["rating"] is None, x["rating"]), reverse=True
+        )
+    elif criteria == "read":
+        return sorted(library, key=lambda x: not x["read"])
 
 def search_for_book():
-    #placehholder 
+    """Search for a book in the library."""
     print("\n--- Search for a Book ---")
+    print("1. Search by Title")
+    print("2. Search by Author")
+    print("3. Return to main menu")
 
+    choice = input("Enter your choice: \n")
+
+    if choice == "1":
+        keyword = input("Enter the title keyword: ").lower()
+        matches = [book for book in library if keyword in book["title"].lower()]
+    elif choice == "2":
+        keyword = input("Enter the author keyword: ").lower()
+        matches = [book for book in library if keyword in book["author"].lower()]
+    elif choice == "3":
+        return
+    else:
+        print("Invalid choice!")
+        return
+
+    # Display matched books
+    clear_screen()
+    if matches:
+        for book in matches:
+            read_status = "Read" if book["read"] else "Unread"
+            rating = book["rating"] if book["rating"] else "Unrated"
+            print(
+                f"Title: {book['title']}, Author: {book['author']}, Status: {read_status}, Rating: {rating}"
+            )
+    else:
+        print("No books found for the given keyword.")
+
+    input("\nPress enter to continue...\n")
 
 
 def about_library_system():
@@ -93,7 +178,7 @@ def about_library_system():
     print("  - Rate them")
     print("  - Mark them as read")
     print("Stay organized and keep track of your reading with ease!")
-    input("Press enter to return to main menu.\n")  
+    input("Press enter to return to main menu.\n")
 
 
 
