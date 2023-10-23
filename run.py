@@ -63,7 +63,14 @@ def view_library():
             read_status = "Read" if book['read'] else "Unread"
             rating = book['rating'] if book['rating'] else "Unrated"
             print(f"Title: {book['title']}, Author: {book['author']}, Status: {read_status}, Rating: {rating}\n")
-    input("Press enter to return to main menu.\n")        
+    input("Press enter to return to main menu.\n")
+
+    # Options after displaying the library
+    print("\nOptions:")
+    print("1. Sort")
+    print("2. Add")
+    print("3. Remove")
+    print("4. Return to main menu")        
                   
 
 def search_for_book():
