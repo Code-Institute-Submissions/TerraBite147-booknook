@@ -62,7 +62,18 @@ def search_for_book():
 
 
 def about_library_system():
+    """About the library system."""
     print("\n--- About ---")
+    print(
+        "The BookNook is a Personal Library Management System allows you to manage your "
+        "personal collection of books. With this system, you can:"
+    )
+    print("  - View your entire library")
+    print("  - Search for specific books")
+    print("  - Add or remove books")
+    print("  - Rate them")
+    print("  - Mark them as read")
+    print("Stay organized and keep track of your reading with ease!")
 
 
 
