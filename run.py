@@ -43,3 +43,28 @@ def main_menu():
             break
         else:
             print("Invalid choice. Please try again.")
+
+def view_library():
+    """Displays the library"""
+    print("\n--- Library ---")
+    if len(library) == 0:
+        print("The library is empty.")
+    else:
+        for book in library:
+            read_status = "Read" if book['read'] else "Unread"
+            rating = book['rating'] if book['rating'] else "Unrated"
+            print(f"Title: {book['title']}, Author: {book['author']}, Status: {read_status}, Rating: {rating}\n")
+
+def search_for_book():
+    #placehholder 
+    print("\n--- Search for a Book ---")
+
+
+
+def about_library_system():
+    print("\n--- About ---")
+
+
+
+if __name__ == "__main__":
+    main_menu()
