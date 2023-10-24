@@ -40,6 +40,7 @@ def main_menu():
         print("4. Exit")
 
         choice = input("Enter your choice: \n")
+
         if choice == "1":
             view_library(library)
         elif choice == "2":
@@ -80,7 +81,7 @@ def view_library(library):
     if choice == "1":
         sort_options(library)
     elif choice == "2":
-        print("add_book() placeholder")
+        add_book()
     elif choice == "3":
         # Call remove function here once implemented
         pass
@@ -161,6 +162,48 @@ def search_for_book():
     else:
         print("No books found for the given keyword.")
 
+    input("\nPress enter to continue...\n")
+
+def add_book():
+    """Allows user to add a book to the library."""
+    clear_screen()
+    print("\n--- Add a Book ---")
+
+    title = input("Enter the title of the book: ").strip()
+    author = input("Enter the author of the book: ").strip()
+
+    # Check for duplicates
+    for book in library:
+        if book["title"].lower() == title.lower() and book["author"].lower() == author.lower():
+            print("\nThe book with this title and author already exists in the library.")
+            input("\nPress enter to continue...\n")
+            return
+
+    # Read status
+    read_status = input("Have you read this book? (yes/no): ").strip().lower()
+    read = True if read_status == "yes" else False
+
+    # Rating
+    while True:
+        rating = input("Rate the book (1-5) or type 'skip' to skip rating: ").strip().lower()
+        if rating == "skip":
+            rating = None
+            break
+        elif rating in ["1", "2", "3", "4", "5"]:
+            rating = int(rating)
+            break
+        else:
+            print("Invalid rating. Please enter a number between 1 and 5, or 'skip'.")
+
+    # Add book to library
+    library.append({
+        "title": title,
+        "author": author,
+        "read": read,
+        "rating": rating
+    })
+
+    print(f"\n'{title}' by {author} has been added to the library!")
     input("\nPress enter to continue...\n")
 
 
