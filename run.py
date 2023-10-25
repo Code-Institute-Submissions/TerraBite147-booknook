@@ -2,26 +2,23 @@
 import os
 
 
-# Data structure for the library
+class Book:
+    def __init__(self, title, author, read=False, rating=None):
+        self.title = title
+        self.author = author
+        self.read = read
+        self.rating = rating
+
+    def display(self):
+        read_status = "Read" if self.read else "Unread"
+        rating = self.rating if self.rating else "Unrated"
+        return f"Title: {self.title}, Author: {self.author}, Status: {read_status}, Rating: {rating}"
+
+
 library = [
-    {
-        "title": "Pride and Prejudice",
-        "author": "Jane Austen",
-        "read": False,
-        "rating": None,
-    },
-    {
-        "title": "To Kill a Mockingbird",
-        "author": "Harper Lee",
-        "read": True,
-        "rating": 5,
-    },
-    {
-        "title": "The Great Gatsby",
-        "author": "F. Scott Fitzgerald",
-        "read": False,
-        "rating": None,
-    },
+    Book("Pride and Prejudice", "Jane Austen"),
+    Book("To Kill a Mockingbird", "Harper Lee", True, 5),
+    Book("The Great Gatsby", "F. Scott Fitzgerald"),
 ]
 
 
