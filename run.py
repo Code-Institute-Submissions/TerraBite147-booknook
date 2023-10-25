@@ -83,7 +83,7 @@ def view_library(library):
     elif choice == "2":
         add_book()
     elif choice == "3":
-        # Call remove function here once implemented
+        remove_book()
         pass
     elif choice == "4":
         return
@@ -131,42 +131,45 @@ def sort_library(library, criteria):
 
 def search_for_book():
     """Search for a book in the library."""
-    print("\n--- Search for a Book ---")
-    print("1. Search by Title")
-    print("2. Search by Author")
-    print("3. Return to main menu")
+    while True:
+        print("\n--- Search for a Book ---")
+        print("1. Search by Title")
+        print("2. Search by Author")
+        print("3. Return to main menu")
 
-    choice = input("Enter your choice: \n")
+        choice = input("Enter your choice: \n")
 
-    if choice == "1":
-        keyword = input("Enter the title keyword: ").lower()
-        matches = [book for book in library if keyword in book["title"].lower()]
-    elif choice == "2":
-        keyword = input("Enter the author keyword: ").lower()
-        matches = [book for book in library if keyword in book["author"].lower()]
-    elif choice == "3":
-        return
-    else:
-        print("Invalid choice!")
-        return
+        if choice == "1":
+            keyword = input("Enter the title keyword: ").lower()
+            matches = [book for book in library if keyword in book["title"].lower()]
+        elif choice == "2":
+            keyword = input("Enter the author keyword: ").lower()
+            matches = [book for book in library if keyword in book["author"].lower()]
+        elif choice == "3":
+            return
+        else:
+            print("Invalid choice!")
+            continue
 
-    # Display matched books
-    clear_screen()
-    if matches:
-        for book in matches:
-            read_status = "Read" if book["read"] else "Unread"
-            rating = book["rating"] if book["rating"] else "Unrated"
-            print(
-                f"Title: {book['title']}, Author: {book['author']}, Status: {read_status}, Rating: {rating}"
-            )
-    else:
-        print("No books found for the given keyword.")
-
-    input("\nPress enter to continue...\n")
+        # Display matched books
+        clear_screen()
+        if matches:
+            for book in matches:
+                read_status = "Read" if book["read"] else "Unread"
+                rating = book["rating"] if book["rating"] else "Unrated"
+                print(
+                    f"Title: {book['title']}, Author: {book['author']}, Status: {read_status}, Rating: {rating}"
+                )
+            input("\nPress enter to continue...\n")
+            return
+        else:
+            print("No books found for the given keyword.")
+            action = input("Enter another title/author or press 'Q' to return: ").lower()
+            if action == 'q':
+                return
 
 def add_book():
     """Allows user to add a book to the library."""
-    clear_screen()
     print("\n--- Add a Book ---")
 
     title = input("Enter the title of the book: ").strip()
@@ -206,6 +209,22 @@ def add_book():
     print(f"\n'{title}' by {author} has been added to the library!")
     input("\nPress enter to continue...\n")
 
+def remove_book():
+    """Allows user to remove a book from the library."""
+    print("\n--- Remove a Book ---")
+
+    title = input("Enter the title of the book you want to remove: ").strip()
+
+    # Search for the book in the library
+    book_to_remove = next((book for book in library if book["title"].lower() == title.lower()), None)
+
+    if book_to_remove:
+        library.remove(book_to_remove)
+        print(f"\n'{title}' has been removed from the library!")
+    else:
+        print(f"\nBook titled '{title}' is not found in the library.")
+
+    input("\nPress enter to continue...\n")
 
 def about_library_system():
     """About the library system."""
