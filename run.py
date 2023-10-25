@@ -77,14 +77,35 @@ def add_book():
 
 def remove_book():
     """Removes a book from the library."""
-    title = input("Enter the title of the book you want to remove: ").strip()
-    book_to_remove = next((book for book in library if book.title.lower() == title.lower()), None)
+    if not library:
+        print("The library is empty.")
+        input("\nPress enter to continue...\n")
+        return
 
-    if book_to_remove:
-        library.remove(book_to_remove)
-        print(f"\n'{title}' has been removed from the library!")
-    else:
-        print(f"\nBook titled '{title}' is not found in the library.")
+    print("Select a book to remove from the library:")
+    for idx, book in enumerate(library, 1):
+        print(f"{idx}. {book.title} by {book.author}")
+
+    while True:
+        try:
+            choice = int(input("\nEnter the number of the book you want to remove: "))
+            if 1 <= choice <= len(library):
+                removed_book = library[choice - 1]
+                # Confirm deletion
+                confirmation = input(f"Are you sure you want to remove '{removed_book.title}' by {removed_book.author}? (yes/no): ").lower()
+                if confirmation == "yes":
+                    library.pop(choice - 1)
+                    print(f"\n'{removed_book.title}' by {removed_book.author} has been removed from the library!")
+                    break
+                elif confirmation == "no":
+                    print(f"\n'{removed_book.title}' by {removed_book.author} was not removed.")
+                    break
+                else:
+                    print("Invalid response. Please enter 'yes' or 'no'.")
+            else:
+                print(f"Invalid choice. Please select a number between 1 and {len(library)}.")
+        except ValueError:
+            print("Please enter a valid number.")
 
     input("\nPress enter to continue...\n")
 
