@@ -1,4 +1,5 @@
 # imports 
+from tabulate import tabulate
 import os
 
 # classes
@@ -15,7 +16,13 @@ class Book:
         """Displays the book's title, author, read status, and rating."""
         read_status = "Read" if self.read else "Unread"
         rating = self.rating if self.rating else "Unrated"
-        return f"Title: {self.title}, Author: {self.author}, Status: {read_status}, Rating: {rating}"
+        
+        # Using string formatting
+        return "{:<30} | {:<25} | {:<10} | {:<10}".format(
+            f"Title: {self.title}", 
+            f"Author: {self.author}", 
+            f"Status: {read_status}", 
+            f"Rating: {rating}")
 
 
 library = [
@@ -178,20 +185,29 @@ def view_library(library):
     if not library:
         print("Your library is empty!")
     else:
+        # Prepare data for tabulate
+        table_data = []
+        headers = ["Title", "Author", "Status", "Rating"]
+
         for book in library:
-            print(book.display())
-    
+            read_status = "Read" if book.read else "Unread"
+            rating = book.rating if book.rating else "Unrated"
+            table_data.append([book.title, book.author, read_status, rating])
+
+        # Use tabulate to print the data
+        print(tabulate(table_data, headers=headers, tablefmt="grid"))
+
     print("\n--- Library Menu ---")
     print("1. Sort Library")
     print("2. Add a Book")
     print("3. Remove a Book")
     print("4. Return to main menu")
     
-    choice = int(input("\nEnter your choice: \n")) - 1 # Subtract 1 for 0-based index
+    choice = int(input("\nEnter your choice: \n")) - 1 
     if 0 <= choice < len(library_menu_functions):
         library_menu_functions[choice]()
-    elif choice == 3:  # Corresponds to "4. Return to main menu" option
-        return
+    elif choice == 3: 
+        return  
     else:
         print("Invalid choice!")
 
