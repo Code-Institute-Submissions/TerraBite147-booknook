@@ -1,7 +1,9 @@
 # imports 
 import os
 
+# classes
 
+#book class 
 class Book:
     def __init__(self, title, author, read=False, rating=None):
         self.title = title
@@ -10,6 +12,7 @@ class Book:
         self.rating = rating
 
     def display(self):
+        """Displays the book's title, author, read status, and rating."""
         read_status = "Read" if self.read else "Unread"
         rating = self.rating if self.rating else "Unrated"
         return f"Title: {self.title}, Author: {self.author}, Status: {read_status}, Rating: {rating}"
@@ -134,20 +137,17 @@ def search_for_book():
         elif choice == 3:
             return
 
-
-library_menu_functions = [sort_library, add_book, remove_book]
-
-
 def about_library_system():
     """Displays information about the library system."""
     clear_screen()
-    print("The BookNook is a Personal Library Management System that allows you to manage your personal collection of books.")
-    options = ["Return to main menu"]
-    prompt_choice(options)
+    print("The BookNook is a Personal Library Management System that allows you to manage your personal collection of books.\n")
+    input("Press Enter to return to main menu\n")
 
+library_menu_functions = [sort_library, add_book, remove_book]
 
 def main_menu(library, view_library_fn):
     """Displays Main Menu"""
+    clear_screen()
     while True:
         print("\n--- Personal Library Management System ---")
         print("1. View Library")
@@ -191,16 +191,10 @@ def view_library(library):
     if 0 <= choice < len(library_menu_functions):
         library_menu_functions[choice]()
     elif choice == 3:  # Corresponds to "4. Return to main menu" option
-        main_menu(library, view_library)
+        return
     else:
         print("Invalid choice!")
 
 
 if __name__ == "__main__":
     main_menu(library, view_library)
-
-
-
-
-
-
