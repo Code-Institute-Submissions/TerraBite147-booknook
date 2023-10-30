@@ -15,6 +15,7 @@ scope = [
 creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
 client = gspread.authorize(creds)
 
+
 # Open the Google Sheet
 sheet = client.open("booknook-library").sheet1
 
