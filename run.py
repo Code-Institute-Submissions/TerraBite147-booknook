@@ -85,8 +85,8 @@ def sort_library():
 
 def add_book():
     """Adds a book to the library."""
-    title = input("Enter the title of the book: \n").strip()
-    author = input("Enter the author of the book: \n").strip()
+    title = input("Enter the title of the book: ").strip()
+    author = input("Enter the author of the book: ").strip()
 
     # Check for duplicates
     for book in library:
@@ -100,11 +100,11 @@ def add_book():
             input("\nPress enter to continue...\n")
             return
 
-    read_status = input("Have you read this book? (yes/no): \n").lower()
+    read_status = input("Have you read this book? (yes/no): ").lower()
     read = read_status == "yes"
 
     while True:
-        rating = input("Rate the book (1-5) or type 'skip' to skip rating: \n").lower()
+        rating = input("Rate the book (1-5) or type 'skip' to skip rating: ").lower()
         if rating == "skip":
             rating = None
             break
@@ -112,7 +112,15 @@ def add_book():
             rating = int(rating)
             break
 
-    library.append(Book(title, author, read, rating))
+    # Create a Book object
+    new_book = Book(title, author, read, rating)
+    
+    # Append the book to the local library list
+    library.append(new_book)
+
+    # Add the book to the Google Sheet
+    add_book_to_sheet(new_book)
+
     print(f"\n'{title}' by {author} has been added to the library!")
     input("\nPress enter to continue...\n")
 
