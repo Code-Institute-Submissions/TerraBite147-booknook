@@ -73,8 +73,16 @@ def prompt_choice(options):
 
 
 
+def sort_books_by_criteria(criteria):
+    """Sorts the books based on the given criteria."""
+    library.sort(key=lambda x: getattr(x, criteria))
+
 def sort_library():
     """Sorts the library by title, author, read status, or rating."""
+    if not library:
+        print("Your library is empty.")
+        return
+    
     options = [
         "Sort by title",
         "Sort by author",
@@ -82,11 +90,11 @@ def sort_library():
         "Sort by rating",
         "Return to main menu",
     ]
-    choice = int(prompt_choice(options))
+    choice = prompt_choice(options)
     sort_criteria = ["title", "author", "read", "rating"]
 
     if choice in [1, 2, 3, 4]:
-        library.sort(key=lambda x: getattr(x, sort_criteria[choice - 1]))
+        sort_books_by_criteria(sort_criteria[choice - 1])
         view_library(library)
     elif choice == 5:
         main_menu(library, view_library)
