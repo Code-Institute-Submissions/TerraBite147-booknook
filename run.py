@@ -210,38 +210,38 @@ def remove_book():
         input("\nPress enter to continue...\n")
         return
 
-    print("Select a book to remove from the library:")
-    for idx, book in enumerate(library, 1):
-        print(f"{idx}. {book.title} by {book.author}")
+    # If there are more than 10 books, display them in columns
+    if len(library) > 10:
+        book_options = [f"{book.title} by {book.author}" for book in library]
+        display_options_in_columns(book_options)
+    else:
+        for idx, book in enumerate(library, 1):
+            print(f"{idx}. {book.title} by {book.author}")
 
     while True:
         try:
             choice = int(input("\nEnter the number of the book you want to remove: \n"))
             if 1 <= choice <= len(library):
                 removed_book = library[choice - 1]
-                # Confirm deletion
-                confirmation = input(
-                    f"Are you sure you want to remove '{removed_book.title}' by {removed_book.author}? (yes/no): \n"
-                ).lower()
-                if confirmation == "yes":
-                    library.pop(choice - 1)
-                    print(
-                        f"\n'{removed_book.title}' by {removed_book.author} has been removed from the library!"
-                    )
-                    break
-                elif confirmation == "no":
-                    print(
-                        f"\n'{removed_book.title}' by {removed_book.author} was not removed."
-                    )
-                    break
-                else:
-                    print("Invalid response. Please enter 'yes' or 'no'.")
+                break
             else:
-                print(
-                    f"Invalid choice. Please select a number between 1 and {len(library)}."
-                )
+                print(f"Please select a number between 1 and {len(library)}.")
         except ValueError:
             print("Please enter a valid number.")
+
+    while True:
+        confirmation = input(
+            f"\nAre you sure you want to remove '{removed_book.title}' by {removed_book.author}? (yes/no): \n"
+        ).lower()
+        if confirmation == "yes":
+            library.pop(choice - 1)
+            print(f"'{removed_book.title}' by {removed_book.author} has been removed from the library!")
+            break
+        elif confirmation == "no":
+            print(f"'{removed_book.title}' by {removed_book.author} was not removed.")
+            break
+        else:
+            print("Please respond with 'yes' or 'no'.")
 
     input("\nPress enter to continue...\n")
 
@@ -250,7 +250,10 @@ def search_for_book():
     """Searches for a book by title or author."""
     while True:
         options = ["Search by Title", "Search by Author", "Return to main menu"]
-        choice = int(prompt_choice(options))
+        
+        print("\n--- Search Menu ---")
+        display_options_in_columns(options)
+        choice = int(input("\nEnter your choice: \n"))
 
         if choice in [1, 2]:
             keyword = (
@@ -280,6 +283,7 @@ def search_for_book():
 
         elif choice == 3:
             return
+
 
 
 def about_booknook():
@@ -368,10 +372,13 @@ def view_library(library):
         print(tabulate(table_data, headers=headers, tablefmt="grid"))
 
     print("\n--- Library Menu ---")
-    print("1. Sort Library")
-    print("2. Add a Book")
-    print("3. Remove a Book")
-    print("4. Return to main menu")
+    options = [
+        "Sort Library",
+        "Add a Book",
+        "Remove a Book",
+        "Return to main menu"
+    ]
+    display_options_in_columns(options)
 
     choice = int(input("\nEnter your choice: \n")) - 1
     if 0 <= choice < len(library_menu_functions):
@@ -380,6 +387,7 @@ def view_library(library):
         return
     else:
         print("Invalid choice!")
+
 
 
 if __name__ == "__main__":
