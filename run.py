@@ -90,7 +90,22 @@ def sort_library():
         "Sort by rating",
         "Return to main menu",
     ]
-    choice = prompt_choice(options)
+    
+    while True:
+        try:
+            choice = prompt_choice(options)
+            
+            # Check if the choice is a valid number
+            choice = int(choice)
+
+            # Validate if the choice is within the given range
+            if choice not in range(1, len(options) + 1):
+                raise ValueError
+
+            break
+        except ValueError:
+            print("Invalid choice. Please enter a number from the options.")
+            
     sort_criteria = ["title", "author", "read", "rating"]
 
     if choice in [1, 2, 3, 4]:
