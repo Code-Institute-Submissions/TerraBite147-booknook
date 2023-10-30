@@ -221,13 +221,31 @@ def search_for_book():
             return
 
 
-def about_library_system():
+def about_booknook():
     """Displays information about the library system."""
     clear_screen()
+    print("Welcome to BookNook: Your Personal Library Management System!")
+    print("-" * 80)  # prints a divider line
+    
     print(
-        "The BookNook is a Personal Library Management System that allows you to manage your personal collection of books.\n"
+        "\nBookNook is designed to help you manage and keep track of your personal collection of books."
+        "\nWith BookNook, you can:"
+        "\n\n1. Manage your book collection."
+        "\n2. View your entire library."
+        "\n3. Record if you've read a book and rate it on a scale of 1-5."
+        "\n4. Integrated with Google Sheets to ensure BookNook is portable."
+        "\n5. Easily search, update, add or remove books from your collection."
+        "\n\nOur system is user-friendly and aims to make your reading journey more organized and enjoyable!"
     )
-    input("Press Enter to return to main menu\n")
+    
+    print("\nTechnical Details:")
+    print("- Developed in Python with a focus on user experience.")
+    print("- Utilizes object-oriented programming principles.")
+    print("- Integration capability with Google Sheets using relevant APIs.")
+    
+    print("\nWe continuously aim to improve BookNook. Your feedback is valuable!")
+    
+    input("\nPress Enter to return to the main menu.")
 
 
 library_menu_functions = [sort_library, add_book, remove_book]
