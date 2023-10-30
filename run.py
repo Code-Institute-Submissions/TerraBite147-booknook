@@ -22,6 +22,16 @@ def clear_screen():
     """Clear the terminal screen."""
     os.system("clear")
 
+def display_options_in_columns(options):
+    """Displays options in two columns."""
+    half_len = len(options) // 2
+    for idx in range(half_len):
+        print(f"{idx + 1}. {options[idx]}", end="\t\t")
+        if idx + half_len < len(options):
+            print(f"{idx + 1 + half_len}. {options[idx + half_len]}")
+    if len(options) % 2:
+        print(f"{len(options)}. {options[-1]}")
+
 def fetch_books_from_sheet():
     """Fetch all books from Google Sheets and return as a list of Book objects."""
     rows = sheet.get_all_records()  # Returns a list of dictionaries
@@ -54,7 +64,7 @@ class Book:
             f"Status: {read_status}",
             f"Rating: {rating}",
         )
-
+#Pulls library from Google Sheets
 library = fetch_books_from_sheet()
 
 def prompt_choice(options):
@@ -74,31 +84,40 @@ def prompt_choice(options):
 
 
 def sort_books_by_criteria(criteria):
-    """Sorts the books based on the given criteria."""
-    library.sort(key=lambda x: getattr(x, criteria))
+    """Sorts the books by given criteria."""
+    def sort_key(item):
+        value = getattr(item, criteria)
+        # Treat None as a low value; adjust as required
+        if value is None:
+            return (0, )  # Using a tuple so you can add more sort keys if needed
+        if isinstance(value, str):
+            return (1, value)  # Strings come after None
+        if isinstance(value, (int, float)):
+            return (2, value)  # Numbers come after strings
+
+    library.sort(key=sort_key)
 
 def sort_library():
     """Sorts the library by title, author, read status, or rating."""
     if not library:
         print("Your library is empty.")
         return
-    
+
     options = [
         "Sort by title",
         "Sort by author",
         "Sort by read status",
         "Sort by rating",
-        "Return to main menu",
+        "Return to main menu"
     ]
+
+    display_options_in_columns(options)
     
     while True:
         try:
-            choice = prompt_choice(options)
-            
-            # Check if the choice is a valid number
+            choice = input("\nEnter your choice: ")
             choice = int(choice)
 
-            # Validate if the choice is within the given range
             if choice not in range(1, len(options) + 1):
                 raise ValueError
 
@@ -288,26 +307,35 @@ def main_menu(library, view_library_fn):
     clear_screen()
     while True:
         print("\n--- Personal Library Management System ---")
-        print("1. View Library")
-        print("2. Search for a Book")
-        print("3. About")
-        print("4. Exit")
 
-        choice = input("Enter your choice: \n")
+        options = [
+            "View Library",
+            "Search for a Book",
+            "About",
+            "Exit"
+        ]
 
-        if choice == "1":
-            view_library_fn(library)
-        elif choice == "2":
-            search_for_book()
-        elif choice == "3":
-            about_booknook()
-        elif choice == "4":
-            print(
-                "Exiting... Thank you for using the Personal Library Management System!"
-            )
-            break
-        else:
-            print("Invalid choice. Please try again.")
+        display_options_in_columns(options)
+        
+        try:
+            choice = int(input("\nEnter your choice: \n"))
+
+            if choice == 1:
+                view_library_fn(library)
+            elif choice == 2:
+                search_for_book()
+            elif choice == 3:
+                about_booknook()
+            elif choice == 4:
+                print(
+                    "Exiting... Thank you for using the Personal Library Management System!"
+                )
+                break
+            else:
+                print("Invalid choice. Please try again.")
+        except ValueError:
+            print("Please enter a number corresponding to the options.")
+
 
 
 def view_library(library):
