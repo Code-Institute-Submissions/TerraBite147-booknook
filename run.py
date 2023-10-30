@@ -23,14 +23,24 @@ def clear_screen():
     os.system("clear")
 
 def display_options_in_columns(options):
-    """Displays options in two columns."""
-    half_len = len(options) // 2
-    for idx in range(half_len):
-        print(f"{idx + 1}. {options[idx]}", end="\t\t")
-        if idx + half_len < len(options):
-            print(f"{idx + 1 + half_len}. {options[idx + half_len]}")
-    if len(options) % 2:
-        print(f"{len(options)}. {options[-1]}")
+    """Displays menu options in two columns."""
+    
+    # Split the options into two columns
+    half_length = len(options) // 2
+    col1 = options[:half_length]
+    col2 = options[half_length:]
+    
+    # Calculate the maximum length of options in the first column
+    max_length_col1 = max(len(option) for option in col1)
+
+    # Display each pair of options side-by-side
+    for i in range(half_length):
+        # If there's an option in the second column to pair with the first column option
+        if i < len(col2):
+            print(f"{i+1}. {col1[i].ljust(max_length_col1 + 5)} {i+half_length+1}. {col2[i]}")
+        else:
+            print(f"{i+1}. {col1[i]}")
+
 
 def fetch_books_from_sheet():
     """Fetch all books from Google Sheets and return as a list of Book objects."""
