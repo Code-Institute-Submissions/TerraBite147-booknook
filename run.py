@@ -59,9 +59,18 @@ library = fetch_books_from_sheet()
 
 def prompt_choice(options):
     """Prompts user to choose from a list of options."""
-    for idx, option in enumerate(options, 1):
-        print(f"{idx}. {option}")
-    return input("\nEnter your choice: \n")
+    while True:
+        for idx, option in enumerate(options, 1):
+            print(f"{idx}. {option}")
+        try:
+            choice = int(input("\nEnter your choice: "))
+            if 1 <= choice <= len(options):
+                return choice
+            else:
+                print(f"Please choose a number between 1 and {len(options)}.\n")
+        except ValueError:
+            print("Invalid input. Please enter a number.\n")
+
 
 
 def sort_library():
@@ -268,7 +277,7 @@ def main_menu(library, view_library_fn):
         elif choice == "2":
             search_for_book()
         elif choice == "3":
-            about_library_system()
+            about_booknook()
         elif choice == "4":
             print(
                 "Exiting... Thank you for using the Personal Library Management System!"
