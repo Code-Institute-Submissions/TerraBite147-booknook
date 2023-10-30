@@ -83,46 +83,63 @@ def sort_library():
         main_menu(library, view_library)
 
 
-def add_book():
-    """Adds a book to the library."""
+def get_book_details():
     title = input("Enter the title of the book: ").strip()
     author = input("Enter the author of the book: ").strip()
+    return title, author
 
-    # Check for duplicates
+def check_duplicate_book(title, author):
     for book in library:
-        if (
-            book.title.lower() == title.lower()
-            and book.author.lower() == author.lower()
-        ):
-            print(
-                "\nThe book with this title and author already exists in the library."
-            )
-            input("\nPress enter to continue...\n")
-            return
+        if book.title.lower() == title.lower() and book.author.lower() == author.lower():
+            return True
+    return False
 
+def get_read_status():
     read_status = input("Have you read this book? (yes/no): ").lower()
-    read = read_status == "yes"
+    if read_status not in ["yes", "no"]:
+        raise ValueError("Invalid response. Please enter 'yes' or 'no'.")
+    return read_status == "yes"
 
+def get_book_rating():
     while True:
         rating = input("Rate the book (1-5) or type 'skip' to skip rating: ").lower()
         if rating == "skip":
-            rating = None
-            break
+            return None
         elif rating in ["1", "2", "3", "4", "5"]:
-            rating = int(rating)
-            break
+            return int(rating)
+        else:
+            print("Invalid rating. Please choose between 1-5 or type 'skip'.")
 
-    # Create a Book object
-    new_book = Book(title, author, read, rating)
-    
-    # Append the book to the local library list
-    library.append(new_book)
+def add_book():
+    """Adds a book to the library."""
+    try:
+        title, author = get_book_details()
 
-    # Add the book to the Google Sheet
-    add_book_to_sheet(new_book)
+        # Check for duplicates
+        if check_duplicate_book(title, author):
+            print("\nThe book with this title and author already exists in the library.")
+            input("\nPress enter to continue...\n")
+            return
 
-    print(f"\n'{title}' by {author} has been added to the library!")
-    input("\nPress enter to continue...\n")
+        read = get_read_status()
+        rating = get_book_rating()
+
+        # Create a Book object and add to the library
+        new_book = Book(title, author, read, rating)
+        library.append(new_book)
+
+        # Add the book to the Google Sheet
+        add_book_to_sheet(new_book)
+
+        print(f"\n'{title}' by {author} has been added to the library!")
+        input("\nPress enter to continue...\n")
+
+    except ValueError as e:
+        print(f"Error: {e}")
+        input("\nPress enter to continue...\n")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        input("\nPress enter to continue...\n")
 
 
 def remove_book():
