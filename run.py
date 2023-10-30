@@ -61,7 +61,7 @@ def prompt_choice(options):
     """Prompts user to choose from a list of options."""
     for idx, option in enumerate(options, 1):
         print(f"{idx}. {option}")
-    return input("\nEnter your choice: ")
+    return input("\nEnter your choice: \n")
 
 
 def sort_library():
@@ -85,8 +85,8 @@ def sort_library():
 
 def add_book():
     """Adds a book to the library."""
-    title = input("Enter the title of the book: ").strip()
-    author = input("Enter the author of the book: ").strip()
+    title = input("Enter the title of the book: \n").strip()
+    author = input("Enter the author of the book: \n").strip()
 
     # Check for duplicates
     for book in library:
@@ -100,11 +100,11 @@ def add_book():
             input("\nPress enter to continue...\n")
             return
 
-    read_status = input("Have you read this book? (yes/no): ").lower()
+    read_status = input("Have you read this book? (yes/no): \n").lower()
     read = read_status == "yes"
 
     while True:
-        rating = input("Rate the book (1-5) or type 'skip' to skip rating: ").lower()
+        rating = input("Rate the book (1-5) or type 'skip' to skip rating: \n").lower()
         if rating == "skip":
             rating = None
             break
@@ -130,12 +130,12 @@ def remove_book():
 
     while True:
         try:
-            choice = int(input("\nEnter the number of the book you want to remove: "))
+            choice = int(input("\nEnter the number of the book you want to remove: \n"))
             if 1 <= choice <= len(library):
                 removed_book = library[choice - 1]
                 # Confirm deletion
                 confirmation = input(
-                    f"Are you sure you want to remove '{removed_book.title}' by {removed_book.author}? (yes/no): "
+                    f"Are you sure you want to remove '{removed_book.title}' by {removed_book.author}? (yes/no): \n"
                 ).lower()
                 if confirmation == "yes":
                     library.pop(choice - 1)
@@ -168,9 +168,9 @@ def search_for_book():
 
         if choice in [1, 2]:
             keyword = (
-                input("Enter the title keyword: ").lower()
+                input("Enter the title keyword: \n").lower()
                 if choice == 1
-                else input("Enter the author keyword: ").lower()
+                else input("Enter the author keyword: \n").lower()
             )
             matches = [
                 book
@@ -187,7 +187,7 @@ def search_for_book():
                 return
             else:
                 action = input(
-                    "Enter another title/author or press 'Q' to return: "
+                    "Enter another title/author or press 'Q' to return: \n"
                 ).lower()
                 if action == "q":
                     return
