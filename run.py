@@ -19,6 +19,12 @@ client = gspread.authorize(creds)
 # Open the Google Sheet
 sheet = client.open("booknook-library").sheet1
 
+
+
+def clear_screen():
+    """Clear the terminal screen."""
+    os.system("cls" if os.name == "nt" else "clear")
+
 def fetch_books_from_sheet():
     """Fetch all books from Google Sheets and return as a list of Book objects."""
     rows = sheet.get_all_records()  # Returns a list of dictionaries
@@ -53,11 +59,6 @@ class Book:
         )
 
 library = fetch_books_from_sheet()
-
-def clear_screen():
-    """Clear the terminal screen."""
-    os.system("cls" if os.name == "nt" else "clear")
-
 
 def prompt_choice(options):
     """Prompts user to choose from a list of options."""

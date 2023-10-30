@@ -1,5 +1,10 @@
 {
     "cSpell.ignoreWords": [
         "creds"
+    ],
+    "cSpell.words": [
+        "booknook",
+        "gspread",
+        "tablefmt"
     ]
 }
