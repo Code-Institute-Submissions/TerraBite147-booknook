@@ -355,11 +355,21 @@ def main_menu(library, view_library_fn):
 
 def view_library(library):
     """Displays all books in the library and provides library options."""
+    clear_screen()
+
     if not library:
         print("Your library is empty!")
     else:
-        # Display books...
-        pass  # The existing code to display books goes here
+        # Prepare data for tabulate
+        table_data = []
+        headers = ["#", "Title", "Author", "Status", "Rating"]
+
+        for index, book in enumerate(library, start=1):
+            read_status = "Read" if book.read else "Unread"
+            rating = book.rating if book.rating else "Unrated"
+            table_data.append([index, book.title, book.author, read_status, rating])
+
+        print(tabulate(table_data, headers=headers, tablefmt="grid"))
 
     print("\n--- Library Menu ---")
     options = [
@@ -370,11 +380,12 @@ def view_library(library):
         "Return to main menu"
     ]
     display_options_in_columns(options)
+    print("5. Main Menu")
 
     choice = int(input("\nEnter your choice: \n"))
     
     if choice == 1:
-        sort_library(library)
+        sort_library()
     elif choice == 2:
         add_book()
     elif choice == 3:
