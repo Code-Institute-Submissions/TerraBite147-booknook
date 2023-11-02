@@ -362,12 +362,12 @@ def view_library(library):
     else:
         # Prepare data for tabulate
         table_data = []
-        headers = ["Title", "Author", "Status", "Rating"]
+        headers = ["#", "Title", "Author", "Status", "Rating"]
 
-        for book in library:
+        for index, book in enumerate(library, start=1):  
             read_status = "Read" if book.read else "Unread"
             rating = book.rating if book.rating else "Unrated"
-            table_data.append([book.title, book.author, read_status, rating])
+            table_data.append([index, book.title, book.author, read_status, rating])  
 
         # Use tabulate to print the data
         print(tabulate(table_data, headers=headers, tablefmt="grid"))
