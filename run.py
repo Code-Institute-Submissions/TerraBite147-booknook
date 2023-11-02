@@ -3,6 +3,7 @@ import os
 import gspread
 from google.oauth2 import service_account
 from tabulate import tabulate
+from functools import partial
 
 # Define the scope for Google Sheets API
 scope = [
@@ -77,22 +78,6 @@ class Book:
         )
 #Pulls library from Google Sheets
 library = fetch_books_from_sheet()
-
-def prompt_choice(options):
-    """Prompts user to choose from a list of options."""
-    while True:
-        for idx, option in enumerate(options, 1):
-            print(f"{idx}. {option}")
-        try:
-            choice = int(input("\nEnter your choice: "))
-            if 1 <= choice <= len(options):
-                return choice
-            else:
-                print(f"Please choose a number between 1 and {len(options)}.\n")
-        except ValueError:
-            print("Invalid input. Please enter a number.\n")
-
-
 
 def sort_books_by_criteria(criteria):
     """Sorts the books by given criteria."""
@@ -330,9 +315,6 @@ def edit_book(library):
     except ValueError:
         print("Invalid input! Please enter a valid number.")
 
-
-library_menu_functions = [sort_library, add_book, remove_book, edit_book]
-
 def main_menu(library, view_library_fn):
     """Displays Main Menu"""
     clear_screen()
@@ -348,62 +330,62 @@ def main_menu(library, view_library_fn):
 
         display_options_in_columns(options)
         
-        try:
-            choice = int(input("\nEnter your choice: \n"))
-
-            if choice == 1:
-                view_library_fn(library)
-            elif choice == 2:
-                search_for_book()
-            elif choice == 3:
-                about_booknook()
-            elif choice == 4:
-                print(
-                    "Exiting... Thank you for using the Personal Library Management System!"
-                )
-                break
-            else:
-                print("Invalid choice. Please try again.")
-        except ValueError:
+        choice = input("\nEnter your choice: \n")
+        if not choice.isdigit():
             print("Please enter a number corresponding to the options.")
+            continue
+
+        choice = int(choice)
+        if choice == 1:
+            view_library_fn(library)
+        elif choice == 2:
+            search_for_book()
+        elif choice == 3:
+            about_booknook()
+        elif choice == 4:
+            print(
+                "Exiting... Thank you for using the Personal Library Management System!"
+            )
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
 
 
 
 def view_library(library):
     """Displays all books in the library and provides library options."""
-    clear_screen()
-
     if not library:
         print("Your library is empty!")
     else:
-        # Prepare data for tabulate
-        table_data = []
-        headers = ["#", "Title", "Author", "Status", "Rating"]
+        # Display books...
+        pass  # The existing code to display books goes here
 
-        for index, book in enumerate(library, start=1):
-            read_status = "Read" if book.read else "Unread"
-            rating = book.rating if book.rating else "Unrated"
-            table_data.append([index, book.title, book.author, read_status, rating])
+    print("\n--- Library Menu ---")
+    options = [
+        "Sort Library",
+        "Add a Book",
+        "Remove a Book",
+        "Edit a Book",
+        "Return to main menu"
+    ]
+    display_options_in_columns(options)
 
-        print(tabulate(table_data, headers=headers, tablefmt="grid"))
+    choice = int(input("\nEnter your choice: \n"))
+    
+    if choice == 1:
+        sort_library(library)
+    elif choice == 2:
+        add_book()
+    elif choice == 3:
+        remove_book()
+    elif choice == 4:
+        edit_book(library)
+    elif choice == 5:
+        return
+    else:
+        print("Invalid choice!")
 
-        print("\n--- Library Menu ---")
-        options = [
-            "Sort Library",
-            "Add a Book",
-            "Remove a Book",
-            "Edit a Book"
-        ]
-        display_options_in_columns(options)
-        print("5. Main menu") 
-
-        choice = int(input("\nEnter your choice: \n")) - 1
-        if 0 <= choice < len(library_menu_functions):
-            library_menu_functions[choice]()
-        elif choice == len(library_menu_functions):  # This corresponds to the "Return to main menu" option
-            return
-        else:
-            print("Invalid choice!")
      
 
 
