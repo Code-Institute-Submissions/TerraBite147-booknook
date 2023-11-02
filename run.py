@@ -269,8 +269,6 @@ def search_for_book():
         elif choice == 3:
             return
 
-
-
 def about_booknook():
     """Displays information about the library system."""
     clear_screen()
@@ -297,23 +295,45 @@ def about_booknook():
     
     input("\nPress Enter to return to the main menu.")
 
-
 def edit_book(library):
     try:
         index = int(input("Enter the index number of the book you want to edit: ")) - 1
         if 0 <= index < len(library):
             book = library[index]
-            book.read = True  # Mark the book as read
+            new_title = input(f"Current title is '{book.title}'. Enter new title or press Enter to keep it: ")
+            new_author = input(f"Current author is '{book.author}'. Enter new author or press Enter to keep it: ")
+            read_status = input(f"Is the book read? (current: {'Read' if book.read else 'Unread'}). Enter 'yes' or 'no': ")
             rating = input("Enter your rating for the book (1-5): ")
-            if rating.isdigit() and 1 <= int(rating) <= 5:
-                book.rating = rating
+
+            # Confirmation prompt
+            print("\nPlease confirm the following changes:")
+            print(f"Title: {new_title if new_title else book.title}")
+            print(f"Author: {new_author if new_author else book.author}")
+            print(f"Read Status: {'Read' if read_status.lower() == 'yes' else 'Unread'}")
+            print(f"Rating: {rating if rating.isdigit() and 1 <= int(rating) <= 5 else 'Unchanged'}")
+            confirm = input("Are these changes correct? (yes/no): ")
+
+            if confirm.lower() == 'yes':
+                # Apply changes if confirmed
+                if new_title:
+                    book.title = new_title
+                if new_author:
+                    book.author = new_author
+                if read_status.lower() == 'yes':
+                    book.read = True
+                elif read_status.lower() == 'no':
+                    book.read = False
+                if rating.isdigit() and 1 <= int(rating) <= 5:
+                    book.rating = rating
                 print(f"Book '{book.title}' has been updated.")
             else:
-                print("Invalid rating! Rating should be a number between 1 and 5.")
+                print("Edit cancelled. No changes were made.")
+
         else:
             print("Invalid index number!")
     except ValueError:
         print("Invalid input! Please enter a valid number.")
+
 
 def main_menu(library, view_library_fn):
     """Displays Main Menu"""
@@ -349,9 +369,6 @@ def main_menu(library, view_library_fn):
             break
         else:
             print("Invalid choice. Please try again.")
-
-
-
 
 def view_library(library):
     """Displays all books in the library and provides library options."""
