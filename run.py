@@ -231,15 +231,20 @@ def remove_book():
     input("\nPress enter to continue...\n")
 
 
-def search_for_book():
+def search_for_book(library):
     """Searches for a book by title or author."""
     while True:
         options = ["Search by Title", "Search by Author", "Return to main menu"]
         
         print("\n--- Search Menu ---")
         display_options_in_columns(options)
-        choice = int(input("\nEnter your choice: \n"))
+        choice = input("\nEnter your choice: \n")
 
+        if not choice.isdigit():
+            print("Please enter a valid option.")
+            continue
+        
+        choice = int(choice)
         if choice in [1, 2]:
             keyword = (
                 input("Enter the title keyword: \n").lower()
@@ -255,19 +260,42 @@ def search_for_book():
 
             clear_screen()
             if matches:
-                for book in matches:
-                    print(book.display())
-                input("\nPress enter to continue...\n")
-                return
+                for index, book in enumerate(matches, start=1):
+                    print(f"{index}. {book.display()}")
+                print("\nOptions:")
+                print("1. Edit a book")
+                print("2. Remove a book")
+                print("3. Return to search menu")
+
+                action_choice = input("\nEnter your choice, or press enter to continue: \n")
+                if action_choice.isdigit():
+                    action_choice = int(action_choice)
+                    if action_choice == 1:
+                        book_index = int(input("Enter the index of the book you want to edit: ")) - 1
+                        if 0 <= book_index < len(matches):
+                            edit_book(library, matches[book_index])
+                        else:
+                            print("Invalid index!")
+                    elif action_choice == 2:
+                        book_index = int(input("Enter the index of the book you want to remove: ")) - 1
+                        if 0 <= book_index < len(matches):
+                            remove_book(library, matches[book_index])
+                        else:
+                            print("Invalid index!")
+                    elif action_choice == 3:
+                        return
+                else:
+                    input("\nPress enter to continue...\n")
+                    return
             else:
                 action = input(
                     "Enter another title/author or press 'Q' to return: \n"
                 ).lower()
                 if action == "q":
                     return
-
         elif choice == 3:
             return
+
 
 def about_booknook():
     """Displays information about the library system."""
@@ -359,7 +387,7 @@ def main_menu(library, view_library_fn):
         if choice == 1:
             view_library_fn(library)
         elif choice == 2:
-            search_for_book()
+            search_for_book(library)
         elif choice == 3:
             about_booknook()
         elif choice == 4:
