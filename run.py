@@ -1,9 +1,10 @@
 # imports
-from tabulate import tabulate
 import os
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2 import service_account
+from tabulate import tabulate
 
+# Define the scope for Google Sheets API
 scope = [
     "https://spreadsheets.google.com/feeds",
     "https://www.googleapis.com/auth/spreadsheets",
@@ -12,7 +13,7 @@ scope = [
 ]
 
 # Google Sheets connection
-creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
+creds = service_account.Credentials.from_service_account_file("creds.json", scopes=scope)
 client = gspread.authorize(creds)
 
 # Open the Google Sheet
