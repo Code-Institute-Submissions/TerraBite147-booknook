@@ -123,7 +123,6 @@ def sort_library():
     ]
 
     display_options_in_columns(options)
-    
     while True:
         try:
             choice = input("\nEnter your choice: ")
@@ -314,8 +313,25 @@ def about_booknook():
     input("\nPress Enter to return to the main menu.")
 
 
-library_menu_functions = [sort_library, add_book, remove_book]
+def edit_book(library):
+    try:
+        index = int(input("Enter the index number of the book you want to edit: ")) - 1
+        if 0 <= index < len(library):
+            book = library[index]
+            book.read = True  # Mark the book as read
+            rating = input("Enter your rating for the book (1-5): ")
+            if rating.isdigit() and 1 <= int(rating) <= 5:
+                book.rating = rating
+                print(f"Book '{book.title}' has been updated.")
+            else:
+                print("Invalid rating! Rating should be a number between 1 and 5.")
+        else:
+            print("Invalid index number!")
+    except ValueError:
+        print("Invalid input! Please enter a valid number.")
 
+
+library_menu_functions = [sort_library, add_book, remove_book, edit_book]
 
 def main_menu(library, view_library_fn):
     """Displays Main Menu"""
@@ -364,31 +380,31 @@ def view_library(library):
         table_data = []
         headers = ["#", "Title", "Author", "Status", "Rating"]
 
-        for index, book in enumerate(library, start=1):  
+        for index, book in enumerate(library, start=1):
             read_status = "Read" if book.read else "Unread"
             rating = book.rating if book.rating else "Unrated"
-            table_data.append([index, book.title, book.author, read_status, rating])  
+            table_data.append([index, book.title, book.author, read_status, rating])
 
-        # Use tabulate to print the data
         print(tabulate(table_data, headers=headers, tablefmt="grid"))
 
-    print("\n--- Library Menu ---")
-    options = [
-        "Sort Library",
-        "Add a Book",
-        "Remove a Book",
-        "Return to main menu"
-    ]
-    display_options_in_columns(options)
+        print("\n--- Library Menu ---")
+        options = [
+            "Sort Library",
+            "Add a Book",
+            "Remove a Book",
+            "Edit a Book"
+        ]
+        display_options_in_columns(options)
+        print("5. Main menu") 
 
-    choice = int(input("\nEnter your choice: \n")) - 1
-    if 0 <= choice < len(library_menu_functions):
-        library_menu_functions[choice]()
-    elif choice == 3:
-        return
-    else:
-        print("Invalid choice!")
-
+        choice = int(input("\nEnter your choice: \n")) - 1
+        if 0 <= choice < len(library_menu_functions):
+            library_menu_functions[choice]()
+        elif choice == len(library_menu_functions):  # This corresponds to the "Return to main menu" option
+            return
+        else:
+            print("Invalid choice!")
+     
 
 
 if __name__ == "__main__":
