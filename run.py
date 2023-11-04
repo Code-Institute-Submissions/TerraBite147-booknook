@@ -3,7 +3,6 @@ import os
 import gspread
 from google.oauth2 import service_account
 from tabulate import tabulate
-from functools import partial
 
 # Define the scope for Google Sheets API
 scope = [
@@ -14,24 +13,28 @@ scope = [
 ]
 
 # Google Sheets connection
-creds = service_account.Credentials.from_service_account_file("creds.json", scopes=scope)
+creds = service_account.Credentials.from_service_account_file(
+    "creds.json", scopes=scope
+)
 client = gspread.authorize(creds)
 
 # Open the Google Sheet
 sheet = client.open("booknook-library").sheet1
 
+
 def clear_screen():
     """Clear the terminal screen."""
     os.system("clear")
 
+
 def display_options_in_columns(options):
     """Displays menu options in two columns."""
-    
+
     # Split the options into two columns
     half_length = len(options) // 2
     col1 = options[:half_length]
     col2 = options[half_length:]
-    
+
     # Calculate the maximum length of options in the first column
     max_length_col1 = max(len(option) for option in col1)
 
@@ -39,7 +42,9 @@ def display_options_in_columns(options):
     for i in range(half_length):
         # If there's an option in the second column to pair with the first column option
         if i < len(col2):
-            print(f"{i+1}. {col1[i].ljust(max_length_col1 + 5)} {i+half_length+1}. {col2[i]}")
+            print(
+                f"{i+1}. {col1[i].ljust(max_length_col1 + 5)} {i+half_length+1}. {col2[i]}"
+            )
         else:
             print(f"{i+1}. {col1[i]}")
 
@@ -47,17 +52,23 @@ def display_options_in_columns(options):
 def fetch_books_from_sheet():
     """Fetch all books from Google Sheets and return as a list of Book objects."""
     rows = sheet.get_all_records()  # Returns a list of dictionaries
-    books = [Book(row['Title'], row['Author'], row['Status'] == 'Read', row.get('Rating')) for row in rows]
+    books = [
+        Book(row["Title"], row["Author"], row["Status"] == "Read", row.get("Rating"))
+        for row in rows
+    ]
     return books
+
 
 def add_book_to_sheet(book):
     """Add a book to the Google Sheet."""
     read_status = "Read" if book.read else "Unread"
     sheet.append_row([book.title, book.author, read_status, book.rating or "Unrated"])
 
-#classes    
-# book class
+
+# classes
 class Book:
+    """Represents a book in the library."""
+
     def __init__(self, title, author, read=False, rating=None):
         self.title = title
         self.author = author
@@ -76,22 +87,27 @@ class Book:
             f"Status: {read_status}",
             f"Rating: {rating}",
         )
-#Pulls library from Google Sheets
+
+
+# Pulls library from Google Sheets
 library = fetch_books_from_sheet()
+
 
 def sort_books_by_criteria(criteria):
     """Sorts the books by given criteria."""
+
     def sort_key(item):
         value = getattr(item, criteria)
         # Treat None as a low value; adjust as required
         if value is None:
-            return (0, )  # Using a tuple so you can add more sort keys if needed
+            return (0,)  # Using a tuple so you can add more sort keys if needed
         if isinstance(value, str):
             return (1, value)  # Strings come after None
         if isinstance(value, (int, float)):
             return (2, value)  # Numbers come after strings
 
     library.sort(key=sort_key)
+
 
 def sort_library():
     """Sorts the library by title, author, read status, or rating."""
@@ -104,7 +120,7 @@ def sort_library():
         "Sort by author",
         "Sort by read status",
         "Sort by rating",
-        "Return to main menu"
+        "Return to main menu",
     ]
 
     display_options_in_columns(options)
@@ -119,7 +135,7 @@ def sort_library():
             break
         except ValueError:
             print("Invalid choice. Please enter a number from the options.")
-            
+
     sort_criteria = ["title", "author", "read", "rating"]
 
     if choice in [1, 2, 3, 4]:
@@ -134,17 +150,23 @@ def get_book_details():
     author = input("Enter the author of the book: ").strip()
     return title, author
 
+
 def check_duplicate_book(title, author):
     for book in library:
-        if book.title.lower() == title.lower() and book.author.lower() == author.lower():
+        if (
+            book.title.lower() == title.lower()
+            and book.author.lower() == author.lower()
+        ):
             return True
     return False
+
 
 def get_read_status():
     read_status = input("Have you read this book? (yes/no): ").lower()
     if read_status not in ["yes", "no"]:
         raise ValueError("Invalid response. Please enter 'yes' or 'no'.")
     return read_status == "yes"
+
 
 def get_book_rating():
     while True:
@@ -156,6 +178,7 @@ def get_book_rating():
         else:
             print("Invalid rating. Please choose between 1-5 or type 'skip'.")
 
+
 def add_book():
     """Adds a book to the library."""
     try:
@@ -163,7 +186,9 @@ def add_book():
 
         # Check for duplicates
         if check_duplicate_book(title, author):
-            print("\nThe book with this title and author already exists in the library.")
+            print(
+                "\nThe book with this title and author already exists in the library."
+            )
             input("\nPress enter to continue...\n")
             return
 
@@ -220,7 +245,9 @@ def remove_book():
         ).lower()
         if confirmation == "yes":
             library.pop(choice - 1)
-            print(f"'{removed_book.title}' by {removed_book.author} has been removed from the library!")
+            print(
+                f"'{removed_book.title}' by {removed_book.author} has been removed from the library!"
+            )
             break
         elif confirmation == "no":
             print(f"'{removed_book.title}' by {removed_book.author} was not removed.")
@@ -235,7 +262,7 @@ def search_for_book(library):
     """Searches for a book by title or author."""
     while True:
         options = ["Search by Title", "Search by Author", "Return to main menu"]
-        
+
         print("\n--- Search Menu ---")
         display_options_in_columns(options)
         choice = input("\nEnter your choice: \n")
@@ -243,7 +270,7 @@ def search_for_book(library):
         if not choice.isdigit():
             print("Please enter a valid option.")
             continue
-        
+
         choice = int(choice)
         if choice in [1, 2]:
             keyword = (
@@ -267,17 +294,29 @@ def search_for_book(library):
                 print("2. Remove a book")
                 print("3. Return to search menu")
 
-                action_choice = input("\nEnter your choice, or press enter to continue: \n")
+                action_choice = input(
+                    "\nEnter your choice, or press enter to continue: \n"
+                )
                 if action_choice.isdigit():
                     action_choice = int(action_choice)
                     if action_choice == 1:
-                        book_index = int(input("Enter the index of the book you want to edit: ")) - 1
+                        book_index = (
+                            int(input("Enter the index of the book you want to edit: "))
+                            - 1
+                        )
                         if 0 <= book_index < len(matches):
                             edit_book(library, matches[book_index])
                         else:
                             print("Invalid index!")
                     elif action_choice == 2:
-                        book_index = int(input("Enter the index of the book you want to remove: ")) - 1
+                        book_index = (
+                            int(
+                                input(
+                                    "Enter the index of the book you want to remove: "
+                                )
+                            )
+                            - 1
+                        )
                         if 0 <= book_index < len(matches):
                             remove_book(library, matches[book_index])
                         else:
@@ -302,7 +341,7 @@ def about_booknook():
     clear_screen()
     print("Welcome to BookNook: Your Personal Library Management System!")
     print("-" * 80)  # prints a divider line
-    
+
     print(
         "\nBookNook is designed to help you manage and keep track of your personal collection of books."
         "\nWith BookNook, you can:"
@@ -313,43 +352,55 @@ def about_booknook():
         "\n5. Easily search, update, add or remove books from your collection."
         "\n\nOur system is user-friendly and aims to make your reading journey more organized and enjoyable!"
     )
-    
+
     print("\nTechnical Details:")
     print("- Developed in Python with a focus on user experience.")
     print("- Utilizes object-oriented programming principles.")
     print("- Integration capability with Google Sheets using relevant APIs.")
-    
+
     print("\nWe continuously aim to improve BookNook. Your feedback is valuable!")
-    
+
     input("\nPress Enter to return to the main menu.")
+    clear_screen()
+
 
 def edit_book(library):
     try:
         index = int(input("Enter the index number of the book you want to edit: ")) - 1
         if 0 <= index < len(library):
             book = library[index]
-            new_title = input(f"Current title is '{book.title}'. Enter new title or press Enter to keep it: ")
-            new_author = input(f"Current author is '{book.author}'. Enter new author or press Enter to keep it: ")
-            read_status = input(f"Is the book read? (current: {'Read' if book.read else 'Unread'}). Enter 'yes' or 'no': ")
+            new_title = input(
+                f"Current title is '{book.title}'. Enter new title or press Enter to keep it: "
+            )
+            new_author = input(
+                f"Current author is '{book.author}'. Enter new author or press Enter to keep it: "
+            )
+            read_status = input(
+                f"Is the book read? (current: {'Read' if book.read else 'Unread'}). Enter 'yes' or 'no': "
+            )
             rating = input("Enter your rating for the book (1-5): ")
 
             # Confirmation prompt
             print("\nPlease confirm the following changes:")
             print(f"Title: {new_title if new_title else book.title}")
             print(f"Author: {new_author if new_author else book.author}")
-            print(f"Read Status: {'Read' if read_status.lower() == 'yes' else 'Unread'}")
-            print(f"Rating: {rating if rating.isdigit() and 1 <= int(rating) <= 5 else 'Unchanged'}")
+            print(
+                f"Read Status: {'Read' if read_status.lower() == 'yes' else 'Unread'}"
+            )
+            print(
+                f"Rating: {rating if rating.isdigit() and 1 <= int(rating) <= 5 else 'Unchanged'}"
+            )
             confirm = input("Are these changes correct? (yes/no): ")
 
-            if confirm.lower() == 'yes':
+            if confirm.lower() == "yes":
                 # Apply changes if confirmed
                 if new_title:
                     book.title = new_title
                 if new_author:
                     book.author = new_author
-                if read_status.lower() == 'yes':
+                if read_status.lower() == "yes":
                     book.read = True
-                elif read_status.lower() == 'no':
+                elif read_status.lower() == "no":
                     book.read = False
                 if rating.isdigit() and 1 <= int(rating) <= 5:
                     book.rating = rating
@@ -365,19 +416,14 @@ def edit_book(library):
 
 def main_menu(library, view_library_fn):
     """Displays Main Menu"""
-    clear_screen()
     while True:
+        clear_screen()
         print("\n--- Personal Library Management System ---")
 
-        options = [
-            "View Library",
-            "Search for a Book",
-            "About",
-            "Exit"
-        ]
+        options = ["View Library", "Search for a Book", "About", "Exit"]
 
         display_options_in_columns(options)
-        
+
         choice = input("\nEnter your choice: \n")
         if not choice.isdigit():
             print("Please enter a number corresponding to the options.")
@@ -397,6 +443,7 @@ def main_menu(library, view_library_fn):
             break
         else:
             print("Invalid choice. Please try again.")
+
 
 def view_library(library):
     """Displays all books in the library and provides library options."""
@@ -422,13 +469,13 @@ def view_library(library):
         "Add a Book",
         "Remove a Book",
         "Edit a Book",
-        "Return to main menu"
+        "Return to main menu",
     ]
     display_options_in_columns(options)
     print("5. Main Menu")
 
     choice = int(input("\nEnter your choice: \n"))
-    
+
     if choice == 1:
         sort_library()
     elif choice == 2:
@@ -441,8 +488,6 @@ def view_library(library):
         return
     else:
         print("Invalid choice!")
-
-     
 
 
 if __name__ == "__main__":
