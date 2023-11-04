@@ -305,9 +305,10 @@ def search_for_book(library):
                             - 1
                         )
                         if 0 <= book_index < len(matches):
-                            edit_book(library, matches[book_index])
+                            edit_book(matches[book_index])  # Pass only the book object
                         else:
                             print("Invalid index!")
+
                     elif action_choice == 2:
                         book_index = (
                             int(
@@ -364,52 +365,61 @@ def about_booknook():
     clear_screen()
 
 
-def edit_book(library):
+def edit_book(book):
     try:
-        index = int(input("Enter the index number of the book you want to edit: ")) - 1
-        if 0 <= index < len(library):
-            book = library[index]
-            new_title = input(
-                f"Current title is '{book.title}'. Enter new title or press Enter to keep it: "
-            )
-            new_author = input(
-                f"Current author is '{book.author}'. Enter new author or press Enter to keep it: "
-            )
+        new_title = input(
+            f"Current title is '{book.title}'. Enter new title or press Enter to keep it: "
+        )
+
+        new_author = input(
+            f"Current author is '{book.author}'. Enter new author or press Enter to keep it: "
+        )
+
+        # Validate read status input
+        while True:
             read_status = input(
                 f"Is the book read? (current: {'Read' if book.read else 'Unread'}). Enter 'yes' or 'no': "
-            )
-            rating = input("Enter your rating for the book (1-5): ")
-
-            # Confirmation prompt
-            print("\nPlease confirm the following changes:")
-            print(f"Title: {new_title if new_title else book.title}")
-            print(f"Author: {new_author if new_author else book.author}")
-            print(
-                f"Read Status: {'Read' if read_status.lower() == 'yes' else 'Unread'}"
-            )
-            print(
-                f"Rating: {rating if rating.isdigit() and 1 <= int(rating) <= 5 else 'Unchanged'}"
-            )
-            confirm = input("Are these changes correct? (yes/no): ")
-
-            if confirm.lower() == "yes":
-                # Apply changes if confirmed
-                if new_title:
-                    book.title = new_title
-                if new_author:
-                    book.author = new_author
-                if read_status.lower() == "yes":
-                    book.read = True
-                elif read_status.lower() == "no":
-                    book.read = False
-                if rating.isdigit() and 1 <= int(rating) <= 5:
-                    book.rating = rating
-                print(f"Book '{book.title}' has been updated.")
+            ).lower()
+            if read_status in ["yes", "no", ""]:
+                break
             else:
-                print("Edit cancelled. No changes were made.")
+                print("Invalid input! Please enter 'yes' or 'no'.")
 
+        # Validate rating input
+        while True:
+            rating = input(
+                "Enter your rating for the book (1-5) or press Enter to keep it: "
+            )
+            if rating.isdigit() and 1 <= int(rating) <= 5 or rating == "":
+                break
+            else:
+                print("Invalid input! Please enter a number between 1 and 5.")
+
+        # Confirmation prompt
+        print("\nPlease confirm the following changes:")
+        print(f"Title: {new_title if new_title else book.title}")
+        print(f"Author: {new_author if new_author else book.author}")
+        print(f"Read Status: {'Read' if read_status.lower() == 'yes' else 'Unread'}")
+        print(
+            f"Rating: {rating if rating.isdigit() and 1 <= int(rating) <= 5 else 'Unchanged'}"
+        )
+        confirm = input("Are these changes correct? (yes/no): ")
+
+        if confirm.lower() == "yes":
+            # Apply changes if confirmed
+            if new_title:
+                book.title = new_title
+            if new_author:
+                book.author = new_author
+            if read_status.lower() == "yes":
+                book.read = True
+            elif read_status.lower() == "no":
+                book.read = False
+            if rating.isdigit() and 1 <= int(rating) <= 5:
+                book.rating = int(rating)  # Cast to integer
+            print(f"Book '{book.title}' has been updated.")
         else:
-            print("Invalid index number!")
+            print("Edit cancelled. No changes were made.")
     except ValueError:
         print("Invalid input! Please enter a valid number.")
 
