@@ -512,7 +512,11 @@ def view_library(library):
     elif choice == 3:
         remove_book()
     elif choice == 4:
-        edit_book(library)
+        book_index = int(input("Enter the number of the book you want to edit: ")) - 1
+        if 0 <= book_index < len(library):
+            edit_book(library[book_index])
+        else:
+            print("Invalid book number!")
     elif choice == 5:
         return
     else:
