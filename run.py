@@ -1,8 +1,10 @@
 # imports
 import os
 import gspread
+from gspread.exceptions import APIError
 from google.oauth2 import service_account
 from tabulate import tabulate
+from termcolor import colored
 
 # Define the scope for Google Sheets API
 scope = [
@@ -24,7 +26,7 @@ sheet = client.open("booknook-library").sheet1
 
 def clear_screen():
     """Clear the terminal screen."""
-    os.system("clear")
+    os.system("cls")
 
 
 def display_options_in_columns(options):
@@ -63,6 +65,13 @@ def add_book_to_sheet(book):
     """Add a book to the Google Sheet."""
     read_status = "Read" if book.read else "Unread"
     sheet.append_row([book.title, book.author, read_status, book.rating or "Unrated"])
+
+def remove_book_from_sheet(book_to_remove):
+    try:
+        cell = sheet.find(book_to_remove.title)
+        sheet.delete_rows(cell.row)
+    except APIError as e:
+        print("An error occurred while trying to remove the book from the Google Sheet:", e)
 
 
 # classes
@@ -215,6 +224,8 @@ def add_book():
 
 def remove_book():
     """Removes a book from the library."""
+    global library  # Ensure we are using the global library variable
+
     if not library:
         print("The library is empty.")
         input("\nPress enter to continue...\n")
@@ -232,7 +243,7 @@ def remove_book():
         try:
             choice = int(input("\nEnter the number of the book you want to remove: \n"))
             if 1 <= choice <= len(library):
-                removed_book = library[choice - 1]
+                removed_book = library.pop(choice - 1)
                 break
             else:
                 print(f"Please select a number between 1 and {len(library)}.")
@@ -244,12 +255,13 @@ def remove_book():
             f"\nAre you sure you want to remove '{removed_book.title}' by {removed_book.author}? (yes/no): \n"
         ).lower()
         if confirmation == "yes":
-            library.pop(choice - 1)
+            remove_book_from_sheet(removed_book)
             print(
                 f"'{removed_book.title}' by {removed_book.author} has been removed from the library!"
             )
             break
         elif confirmation == "no":
+            library.insert(choice - 1, removed_book)  # Reinsert the book as it was not confirmed for deletion
             print(f"'{removed_book.title}' by {removed_book.author} was not removed.")
             break
         else:
@@ -264,7 +276,9 @@ def search_for_book(library):
         options = ["Search by Title", "Search by Author", "Return to main menu"]
 
         print("\n--- Search Menu ---")
-        display_options_in_columns(options)
+        for index, option in enumerate(options, start=1):
+            print(f"{index}. {option}")
+
         choice = input("\nEnter your choice: \n")
 
         if not choice.isdigit():
@@ -295,7 +309,7 @@ def search_for_book(library):
                 print("3. Return to search menu")
 
                 action_choice = input(
-                    "\nEnter your choice, or press enter to continue: \n"
+                    "\nEnter your choice, or enter to continue: \n"
                 )
                 if action_choice.isdigit():
                     action_choice = int(action_choice)
@@ -311,15 +325,12 @@ def search_for_book(library):
 
                     elif action_choice == 2:
                         book_index = (
-                            int(
-                                input(
-                                    "Enter the index of the book you want to remove: "
-                                )
-                            )
-                            - 1
+                            int(input("Enter the index of the book you want to remove: ")) - 1
                         )
                         if 0 <= book_index < len(matches):
-                            remove_book(library, matches[book_index])
+                            book_to_remove = matches[book_index]
+                            library = [book for book in library if book != book_to_remove]
+                            print(f"Book '{book_to_remove.title}' has been removed from the library.")
                         else:
                             print("Invalid index!")
                     elif action_choice == 3:
