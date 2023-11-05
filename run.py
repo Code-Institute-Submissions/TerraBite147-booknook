@@ -4,7 +4,6 @@ import gspread
 from gspread.exceptions import APIError
 from google.oauth2 import service_account
 from tabulate import tabulate
-from termcolor import colored
 
 # Define the scope for Google Sheets API
 scope = [
@@ -439,6 +438,15 @@ def main_menu(library, view_library_fn):
     """Displays Main Menu"""
     while True:
         clear_screen()
+        print("""
+ ____                 _     _   _                _    
+|  _ \               | |   | \ | |              | |   
+| |_) |  ___    ___  | | __|  \| |  ___    ___  | | __
+|  _ <  / _ \  / _ \ | |/ /| . ` | / _ \  / _ \ | |/ /
+| |_) || (_) || (_) ||   < | |\  || (_) || (_) ||   < 
+|____/  \___/  \___/ |_|\_\|_| \_| \___/  \___/ |_|\_\.
+              """)
+        
         print("\n--- Personal Library Management System ---")
 
         options = ["View Library", "Search for a Book", "About", "Exit"]
