@@ -372,7 +372,7 @@ def search_for_book(library):
                     [index, book.title, book.author, (
                         "Read" if book.read else "Unread"), book.rating if (
                             book.rating)else "Unrated"]
-                            
+
                     for index, book in enumerate(matches, start=1)
                 ]
 
@@ -423,7 +423,8 @@ def search_for_book(library):
                     return
             else:
                 action = input(
-                    "No matches found. Enter another title/author or press 'Q' to return: \n"
+                    "No matches found. Enter another "
+                    "title/author or press 'Q' to return: \n"
                 ).lower()
                 if action == "q":
                     return
@@ -549,7 +550,6 @@ def edit_book(book, library):
                     "to confirm or cancel the changes.")
     except ValueError as e:
         print(f"Invalid input! {e}")
-
 
 
 def update_book_in_sheet(book, original_title):

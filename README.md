@@ -48,7 +48,6 @@ It integrates with Google Sheets to provide a portable solution for tracking boo
 
 - [Credits](#credits)
     * [Content](#content)
-    * [Acknowledgements](#acknowledgements) 
 
 ## Purpose
 The purpose of this project is to create a library management system that allows users to manage their personal collection of books. It integrates with Google Sheets to provide a portable solution for tracking books. The user can add, edit, remove, and search for books in their library. The user can also sort their library by title, author, read status, and rating.
@@ -219,6 +218,15 @@ The exit feature allows the user to exit the program.
 2. The main menu is displayed.
 3. Press 5.
 4. User gets Invalid choice. Please try again.
+5. Press enter to try again.
+6. Press 0.
+7. User gets Invalid choice. Please try again.
+8. Press enter to try again.
+9. Press a.
+10. User gets Invalid choice. Please try again.
+11. Press enter to try again.
+12. Press 1 to view the library.
+13. The library is displayed.
 
 #### Test 3: View Library - Sort Library
 1. Run the program.
@@ -252,6 +260,289 @@ The exit feature allows the user to exit the program.
 11. User gets Invalid choice. Please enter a number from the options and try again.
 12. Press 1 to sort by title.
 13. The library is sorted by title.
+
+#### Test 5: View Library - Add Book
+1. Run the program.
+2. The main menu is displayed.
+3. Press 1 to view the library.
+4. The library is displayed.
+5. Press 2 to add a book.
+6. The user is prompted to enter in the title of the book.
+7. Enter in the title of the book.
+8. The user is prompted to enter in the author of the book.
+9. Enter in the author of the book.
+10. The user is prompted to enter in if they have read the book.
+11. Enter in if they have read the book.
+12. The user is prompted to enter in their rating of the book.
+13. Enter in their rating of the book.
+14. The book is added to the library.
+15. The book is added to the Google Sheet.
+
+#### Test 5: View Library - Add Book Error Handling
+1. Run the program.
+2. The main menu is displayed.
+3. Press 1 to view the library.
+4. The library is displayed.
+5. Press 2 to add a book.
+6. The user is prompted to enter in the title of the book.
+7. Press enter.
+8. User gets The title cannot be blank. Please enter a title and is prompted to enter in the title of the book.
+9. Enter in the title of the book.
+10. The user is prompted to enter in the author of the book.
+11. Press enter.
+12. User gets The author cannot be blank. Please enter an author and is prompted to enter in the author of the book.
+13. Enter in the author of the book.
+14. The user is prompted Have you read this book? (yes/no):
+15. Press enter.
+16. User gets Invalid response. Please enter 'yes' or 'no'. and is prompted to enter in if they have read the book.
+17. Enter in yes they have read the book.
+18. The user is prompted to enter in their rating of the book.
+19. Press enter.
+20. User gets Invalid rating. Please choose between 1-5 or type 'skip'. and is prompted to enter in their rating of the book.
+21. Enter in their rating of the book.
+22. The book is added to the library.
+23. The book is added to the Google Sheet.
+
+#### Test 6: View Library - Remove Book
+1. Run the program.
+2. The main menu is displayed.
+3. Press 1 to view the library.
+4. The library is displayed.
+5. Press 3 to remove a book.
+6. The user is prompted to enter in the index number of the book they want to remove.
+7. Enter in the index number of the book they want to remove.
+8. The user is prompted to confirm if they want to remove the book.
+9. Enter in yes.
+10. The book is removed from the library.
+11. The book is removed from the Google Sheet.
+
+#### Test 6: View Library - Remove Book Error Handling
+1. Run the program.
+2. The main menu is displayed.
+3. Press 1 to view the library.
+4. The library is displayed.
+5. Press 3 to remove a book.
+6. The user is prompted to enter in the index number of the book they want to remove.
+7. Press enter.
+8. User gets Please enter a valid number. Enter the number of the book you want to remove:
+9. Enter in the index number of the book they want to remove.
+10. The user is prompted to confirm if they want to remove the book.
+11. Press enter.
+12. User gets Please respond with 'yes' or 'no'.
+13. Enter in yes.
+14. The book is removed from the library.
+15. The book is removed from the Google Sheet.
+
+#### Test 7: View Library - Edit Book
+1. Run the program.
+2. The main menu is displayed.
+3. Press 1 to view the library.
+4. The library is displayed.
+5. Press 4 to edit a book.
+6. The user is prompted to enter in the index number of the book they want to edit.
+7. Enter in the index number of the book they want to edit.
+8. The user is prompted to enter in the new title of the book.
+9. Enter in the new title of the book.
+10. The user is prompted to enter in the new author of the book.
+11. Enter in the new author of the book.
+12. The user is prompted to enter in if they have read the book.
+13. Enter in if they have read the book.
+14. The user is prompted to enter in their new rating of the book.
+15. Enter in their new rating of the book.
+16. The user is prompted to confirm if they want to edit the book.
+17. Enter in yes.
+18. The book is edited in the library.
+19. The book is edited in the Google Sheet.
+
+#### Test 7: View Library - Edit Book Error Handling
+1. Run the program.
+2. The main menu is displayed.
+3. Press 1 to view the library.
+4. The library is displayed.
+5. Press 4 to edit a book.
+6. The user is prompted to enter in the index number of the book they want to edit.
+7. Press enter.
+8. User gets Invalid input! The book number cannot be blank. Please enter a number.
+9. Enter in the index number of the book they want to edit.
+10. The user is prompted with Current title is 'BOOK TITLE'. Enter new title or press Enter to keep it:
+11. Press enter.
+12. The user is prompted with Current author is 'BOOK AUTHOR'. Enter new author or press Enter to keep it:
+13. Press enter.
+14. The user is prompted with Is the book read? (current: Read). Enter 'yes' or 'no':
+15. Press enter.
+16. The user is prompted with Current rating is 'BOOK RATING'. Enter new rating or press Enter to keep it:
+17. Press enter.
+18. The user is prompted Are these changes correct? press Enter to discard changes (yes/no): 
+19. Press enter.
+20. User gets Invalid response. Please enter 'yes' or 'no'.
+21. The user is prompted Are these changes correct? press Enter to discard changes (yes/no):
+22. Enter in yes.
+23. The book is edited in the library.
+24. The book is edited in the Google Sheet.
+
+#### Test 8: Search for a Book - Search by Title
+1. Run the program.
+2. The main menu is displayed.
+3. Press 2 to search for a book.
+4. The search for a book menu is displayed.
+5. Press 1 to search by title.
+6. The user is prompted to enter in the title of the book they want to search for.
+7. Enter in the title of the book they want to search for.
+8. The book is displayed.
+9. The user is prompted to edit or remove the book or return to the main menu.
+10. Press 1 to edit the book.
+11. The user is prompted to enter in the new title of the book.
+12. Enter in the new title of the book.
+13. The user is prompted to enter in the new author of the book.
+14. Enter in the new author of the book.
+15. The user is prompted to enter in if they have read the book.
+16. Enter in if they have read the book.
+17. The user is prompted to enter in their new rating of the book.
+18. Enter in their new rating of the book.
+19. The user is prompted to confirm if they want to edit the book.
+20. Enter in yes.
+21. The book is edited in the library.
+22. The book is edited in the Google Sheet.
+23. The user is prompted to edit or remove the book or return to the main menu.
+24. Press 2 to remove the book.
+25. The user is prompted to confirm if they want to remove the book.
+26. Enter in yes.
+27. The book is removed from the library.
+28. The book is removed from the Google Sheet.
+29. The user is prompted to edit or remove the book or return to the main menu.
+30. Press 3 to return to the main menu.
+31. The main menu is displayed.
+
+#### Test 8: Search for a Book - Search by Title Error Handling
+1. Run the program.
+2. The main menu is displayed.
+3. Press 2 to search for a book.
+4. The search for a book menu is displayed.
+5. Press 1 to search by title.
+6. The user is prompted to enter in the title of the book they want to search for.
+7. Press enter.
+8. Entire library is displayed.
+9. The user is prompted to edit or remove the book or return to the main menu.
+10. Edit and Remove functions the same as the Edit Book and Remove Book features.
+
+#### Test 9: Search for a Book - Search by Author
+1. Run the program.
+2. The main menu is displayed.
+3. Press 2 to search for a book.
+4. The search for a book menu is displayed.
+5. Press 2 to search by author.
+6. The user is prompted to enter in the author of the book they want to search for.
+7. Enter in the author of the book they want to search for.
+8. The book is displayed.
+9. The user is prompted to edit or remove the book or return to the main menu.
+10. Edit and Remove functions the same as the Edit Book and Remove Book features.
+
+#### Test 9: Search for a Book - Search by Author Error Handling
+1. Run the program.
+2. The main menu is displayed.
+3. Press 2 to search for a book.
+4. The search for a book menu is displayed.
+5. Press 2 to search by author.
+6. The user is prompted to enter in the author of the book they want to search for.
+7. Press enter.
+8. Entire library is displayed.
+9. The user is prompted to edit or remove the book or return to the main menu.
+10. Edit and Remove functions the same as the Edit Book and Remove Book features.
+
+#### Test 10: About
+1. Run the program.
+2. The main menu is displayed.
+3. Press 3 to view the about page.
+4. The about page is displayed.
+5. Press enter.
+6. The main menu is displayed.
+
+#### Test 11: Exit
+1. Run the program.
+2. The main menu is displayed.
+3. Press 4 to exit the program.
+4. The program exits.
+
+### Bugs
+
+
+## Deployment
+### Heroku
+This project is deployed on [Heroku](https://www.heroku.com/).
+
+To deploy this project on Heroku, follow these steps:
+
+1.  Log in to Heroku or create an account if necessary.
+2.  Click on the button labeled "New" from the dashboard in the top right corner and select the "Create new app" option in the drop-down menu.
+3. Enter a unique name for the application and select the region you are in.
+        For this project, the unique name is "booknook" and the region selected is Europe.
+4. Click on "create app".
+5. Navigate to the settings tab and locate the "Config Vars" section and click "Reveal config vars".
+6. Add a config var 
+    * In the "KEY" field:
+        *  enter "CREDS" in capital letters.
+    * In the "VALUE" field:
+        * copy and paste the contents of your creds.json file and click "Add".
+7. Add another config var.
+    * In the "KEY" field:
+        * enter PORT in all capital letters.
+    * In the "VALUE" field:
+        * enter 8000 and click "Add".
+8. Scroll to the "Buildpacks" section and click "Add buildpack".
+9. Select Python and save changes.
+10. Add another buildpack and select Nodejs then save changes again.
+11. Ensure that the python buildpack is above the Nodejs buildpack.
+12. Navigate to the "Deploy" section by clicking the "Deploy" tab in the top navbar.
+13. Select "GitHub" as the deployment method and click "Connect to GitHub".
+14. Search for the GitHub repository name in the search bar.
+15. Click on "connect" to link the repository to Heroku.
+16. Scroll down and click on "Deploy Branch".
+17. Once the app is deployed, Heroku will notify you and provide a button to view the app.
+
+### Forking The Repository
+
+This can be done to create a copy of the repository. The copy can be viewed and edited without affecting the original repository.
+
+To fork the repository through GitHub, take the following steps:
+1. In the "Booknook" repository, click on the "fork" tab in the top right corner.
+2. Click on "create fork" to fork the repository.
+
+### Cloning The Repository
+
+To clone the repository through GitHub:
+
+1. In the repository, select the "code" tab located just above the list of files and next to the gitpod button.
+2. Ensure HTTPS is selected in the dropdown menu.
+3. Copy the URL under HTTPS.
+4. Open Git Bash in your IDE of choice.
+5. Change the current working directory to the location where you want the cloned directory to be created.
+6. Type "git clone" and paste the URL that was copied from the repository.
+7. Press the "enter" key to create the clone.
+
+### APIs 
+In order for the app to function properly, APIs need to be set up and connected. In particular, the following APIs were used for this project:
+
+* Google Drive API.
+   * This helps with getting credentials to access the files within google drive.
+* Google Sheets API.
+   * This is the API for the google sheets where the data is stored for the program.
+
+I followed the steps in a video from the [Code Institute](https://codeinstitute.net/global/) Love Sandwiches project on how to set up and connect APIs. The link to this video is [here](https://www.youtube.com/watch?v=WTll5p4N7hE).
+
+## Credits
+
+### Content
+- The code for the main menu was adapted from the [Code Institute](https://codeinstitute.net/global/) Love Sandwiches project.
+- The code for the search function was helped by [ChatGPT](https://chat.openai.com/) as finding a clear solution was difficult. 
+- The content in the spread sheet was generated using [Random Book Generator](https://www.randomlists.com/random-books)
+
+
+
+
+
+
+
+
 
 
 
