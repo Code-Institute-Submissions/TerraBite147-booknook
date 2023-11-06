@@ -101,9 +101,9 @@ class Book:
         rating = self.rating if self.rating else "Unrated"
 
         # Using string formatting
-        return "{:<30} | {:<25} | {:<10} | {:<10}".format(
+        return "{:<30}\n{:<25}\n{:<10}\n{:<10}".format(
             f"Title: {self.title}",
-            f"Author: {self.author}\n",
+            f"Author: {self.author}",
             f"Status: {read_status}",
             f"Rating: {rating}",
         )
