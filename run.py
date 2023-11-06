@@ -23,6 +23,30 @@ client = gspread.authorize(creds)
 sheet = client.open("booknook-library").sheet1
 
 
+# classes
+class Book:
+    """Represents a book in the library."""
+
+    def __init__(self, title, author, read=False, rating=None):
+        self.title = title
+        self.author = author
+        self.read = read
+        self.rating = rating
+
+    def display(self):
+        """Displays the book's title, author, read status, and rating."""
+        read_status = "Read" if self.read else "Unread"
+        rating = self.rating if self.rating else "Unrated"
+
+        # Using string formatting
+        return "{:<30}\n{:<25}\n{:<10}\n{:<10}".format(
+            f"Title: {self.title}",
+            f"Author: {self.author}",
+            f"Status: {read_status}",
+            f"Rating: {rating}",
+        )
+
+
 def clear_screen():
     """Clear the terminal screen."""
     os.system("clear")
@@ -76,37 +100,27 @@ def add_book_to_sheet(book):
 
 def remove_book_from_sheet(book_to_remove):
     try:
-        cell = sheet.find(book_to_remove.title)
-        sheet.delete_rows(cell.row)
+        values_list = sheet.get_all_values()
+        data_rows = values_list[1:]
+        book_index = None
+        for index, row in enumerate(data_rows, start=2):
+            if row[0] == book_to_remove.title and row[1] == book_to_remove.author:
+                book_index = index
+                break
+            
+        if book_index:
+            sheet.delete_rows(book_index)
+            return True
+        else:
+            print("Book not found in the sheet.")
+            return False
+
     except APIError as e:
         print((
             "An error occurred while trying to"
             " remove the book from the Google Sheet:", e)
         )
-
-
-# classes
-class Book:
-    """Represents a book in the library."""
-
-    def __init__(self, title, author, read=False, rating=None):
-        self.title = title
-        self.author = author
-        self.read = read
-        self.rating = rating
-
-    def display(self):
-        """Displays the book's title, author, read status, and rating."""
-        read_status = "Read" if self.read else "Unread"
-        rating = self.rating if self.rating else "Unrated"
-
-        # Using string formatting
-        return "{:<30}\n{:<25}\n{:<10}\n{:<10}".format(
-            f"Title: {self.title}",
-            f"Author: {self.author}",
-            f"Status: {read_status}",
-            f"Rating: {rating}",
-        )
+        return False
 
 
 # Pulls library from Google Sheets
@@ -166,12 +180,25 @@ def sort_library():
 
 
 def get_book_details():
-    title = input("Enter the title of the book: ").strip()
-    author = input("Enter the author of the book: ").strip()
+    """Gets the book title and author from the user."""
+    while True:
+        title = input("Enter the title of the book: ").strip()
+        if title:
+            break
+        else:
+            print("The title cannot be blank. Please enter a title.")
+
+    while True:
+        author = input("Enter the author of the book: ").strip()
+        if author:
+            break
+        else:
+            print("The author cannot be blank. Please enter an author.")
     return title, author
 
 
 def check_duplicate_book(title, author):
+    """Checks if a book with the same title and author already exists."""
     for book in library:
         if (
             book.title.lower() == title.lower()
@@ -182,13 +209,19 @@ def check_duplicate_book(title, author):
 
 
 def get_read_status():
-    read_status = input("Have you read this book? (yes/no): ").lower()
-    if read_status not in ["yes", "no"]:
-        raise ValueError("Invalid response. Please enter 'yes' or 'no'.")
-    return read_status == "yes"
+    """Gets the read status of the book from the user."""
+    while True:  # Start of the loop
+        read_status = input(
+            "Have you read this book? (yes/no): "
+            ).lower().strip()
+        if read_status in ["yes", "no"]:
+            return read_status == "yes"
+        else:
+            print("Invalid response. Please enter 'yes' or 'no'.")
 
 
 def get_book_rating():
+    """Gets the rating of the book from the user."""
     while True:
         rating = input((
             "Rate the book (1-5) or type 'skip' to skip rating: "
@@ -342,7 +375,6 @@ def search_for_book(library):
                                 "Enter the index of "
                                 "the book you want to edit: "
                             ))
-                            - 1
                         )
                         if 0 <= book_index < len(matches):
                             edit_book(matches[book_index])
@@ -354,7 +386,7 @@ def search_for_book(library):
                             int(input(
                                 "Enter the index of the "
                                 "book you want to remove: "
-                                )) - 1
+                                ))
                         )
                         if 0 <= book_index < len(matches):
                             book_to_remove = matches[book_index]
@@ -567,16 +599,26 @@ def view_library(library):
             elif choice == 3:
                 remove_book()
             elif choice == 4:
-                try:
-                    book_index = int(input("Enter the number of the book you want to edit: ")) - 1
-                    if 0 <= book_index < len(library):
-                        edit_book(library[book_index])
-                    else:
-                        print("Invalid book number!")
-                except ValueError:
-                    print("Invalid input! Please enter a number.")
+                while True:  # Loop to ensure a valid book index is entered
+                    try:
+                        book_index_input = input(
+                            "Enter the number of the book you want to edit: "
+                        )
+                        if not book_index_input.strip():
+                            raise ValueError(
+                                "The book number cannot be blank."
+                                " Please enter a number."
+                                )
+                        book_index = int(book_index_input)
+                        if 0 <= book_index < len(library):
+                            edit_book(library[book_index])
+                            break  # Exit the loop after successful edit
+                        else:
+                            print("Invalid book number! Please try again.")
+                    except ValueError:
+                        print("Invalid input! Please enter a number.")
             elif choice == 5:
-                return 
+                return  
             else:
                 print("Invalid choice!")
         except ValueError as e:
