@@ -103,7 +103,7 @@ class Book:
         # Using string formatting
         return "{:<30} | {:<25} | {:<10} | {:<10}".format(
             f"Title: {self.title}",
-            f"Author: {self.author}\n   ",
+            f"Author: {self.author}\n",
             f"Status: {read_status}",
             f"Rating: {rating}",
         )
