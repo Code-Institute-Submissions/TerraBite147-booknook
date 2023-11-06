@@ -25,7 +25,7 @@ sheet = client.open("booknook-library").sheet1
 
 def clear_screen():
     """Clear the terminal screen."""
-    os.system("clear")
+    os.system("cls")
 
 
 def display_options_in_columns(options):
@@ -390,7 +390,7 @@ def about_booknook():
 
     print(
         "\nBookNook is designed to help you manage and keep track of your"
-        " personal collection of books."
+        "\npersonal collection of books."
         "\nWith BookNook, you can:"
         "\n\n1. Manage your book collection."
         "\n2. View your entire library."
@@ -398,7 +398,7 @@ def about_booknook():
         "\n4. Integrated with Google Sheets to ensure BookNook is portable."
         "\n5. Easily search, update, add or remove books from your collection."
         "\n\nOur system is user-friendly and aims to make your reading journey"
-        " more organized and enjoyable!"
+        "\nmore organized and enjoyable!"
     )
 
     print("\nTechnical Details:")
