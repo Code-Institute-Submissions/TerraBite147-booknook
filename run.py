@@ -366,15 +366,25 @@ def search_for_book(library):
 
             clear_screen()
             if matches:
-                for index, book in enumerate(matches, start=1):
-                    print(f"{index}. {book.display()}")
+                # Prepare data for tabulate
+                headers = ["#", "Title", "Author", "Status", "Rating"]
+                table_data = [
+                    [index, book.title, book.author, (
+                        "Read" if book.read else "Unread"), book.rating if (
+                            book.rating)else "Unrated"]
+                            
+                    for index, book in enumerate(matches, start=1)
+                ]
+
+                print(tabulate(table_data, headers=headers, tablefmt="grid"))
+
                 print("\nOptions:")
                 print("1. Edit a book")
                 print("2. Remove a book")
                 print("3. Return to search menu")
 
                 action_choice = input(
-                    "\nEnter your choice, or enter to continue: \n"
+                    "\nEnter your choice, or press Enter to continue: \n"
                 )
                 if action_choice.isdigit():
                     action_choice = int(action_choice)
@@ -386,7 +396,7 @@ def search_for_book(library):
                             )) - 1
                         )
                         if 0 <= book_index < len(matches):
-                            edit_book(matches[book_index])
+                            edit_book(matches[book_index], library)
                         else:
                             print("Invalid index!")
 
@@ -395,14 +405,11 @@ def search_for_book(library):
                             int(input(
                                 "Enter the index of the "
                                 "book you want to remove: "
-                                ))
+                            )) - 1
                         )
                         if 0 <= book_index < len(matches):
-                            book_to_remove = matches[book_index]
-                            library = [
-                                book for book in library
-                                if book != book_to_remove
-                                ]
+                            book_to_remove = matches.pop(book_index)
+                            remove_book_from_sheet(book_to_remove)
                             print(
                                 f"Book '{book_to_remove.title}'"
                                 " has been removed from the library."
@@ -416,7 +423,7 @@ def search_for_book(library):
                     return
             else:
                 action = input(
-                    "Enter another title/author or press 'Q' to return: \n"
+                    "No matches found. Enter another title/author or press 'Q' to return: \n"
                 ).lower()
                 if action == "q":
                     return
@@ -463,19 +470,19 @@ def edit_book(book, library):
         new_title = input(
             f"Current title is '{book.title}'. Enter new title or press"
             " Enter to keep it: "
-        )
+        ).strip()
 
         new_author = input(
             f"Current author is '{book.author}'. Enter new author or press"
             " Enter to keep it: "
-        )
+        ).strip()
 
         # Validate read status input
         while True:
             read_status = input(
                 "Is the book read? (current: "
                 f"{'Read' if book.read else 'Unread'}). Enter 'yes' or 'no': "
-            ).lower()
+            ).lower().strip()
             if read_status in ["yes", "no", ""]:
                 break
             else:
@@ -486,53 +493,63 @@ def edit_book(book, library):
             rating = input(
                 "Enter your rating for the book (1-5)"
                 " or press Enter to keep it: "
-            )
+            ).strip()
             if rating.isdigit() and 1 <= int(rating) <= 5 or rating == "":
                 break
             else:
                 print("Invalid input! Please enter a number between 1 and 5.")
 
-        # Confirmation prompt
-        print("\nPlease confirm the following changes:")
-        print(f"Title: {new_title if new_title else book.title}")
-        print(f"Author: {new_author if new_author else book.author}")
-        print(
-            "Read Status: "
-            f"{'Read' if read_status.lower() == 'yes' else 'Unread'}")
-        print(
-            f"Rating: "
-            f"{rating if rating.isdigit() and 1 <= int(rating) <= 5 else 'Unchanged'}"
-        )
+        # Confirmation prompt with validation
+        while True:
+            print("\nPlease confirm the following changes:")
+            print(f"Title: {new_title if new_title else book.title}")
+            print(f"Author: {new_author if new_author else book.author}")
+            print(
+                "Read Status: "
+                f"{'Read' if read_status == 'yes' else 'Unread'}"
+            )
+        # Cannot split below into less than 80 characters
+            print(
+                f"Rating: "
+                f"{rating if rating.isdigit() and 1 <= int(rating) <= 5 else 'Unchanged'}"
+            )
 
-        confirm = input("Are these changes correct? (yes/no): ")
+            confirm = input("Are these changes correct? (yes/no): ").strip(
+                ).lower()
+            if confirm == "yes":
+                # Apply changes if confirmed
+                update_needed = False
+                if new_title and new_title != book.title:
+                    book.title = new_title
+                    update_needed = True
+                if new_author and new_author != book.author:
+                    book.author = new_author
+                    update_needed = True
+                if read_status:
+                    book.read = True if read_status == 'yes' else False
+                    update_needed = True
+                if rating.isdigit() and 1 <= int(rating) <= 5:
+                    book.rating = int(rating)
+                    update_needed = True
 
-        if confirm.lower() == "yes":
-            # Apply changes if confirmed
-            update_needed = False
-            if new_title and new_title != book.title:
-                book.title = new_title
-                update_needed = True
-            if new_author and new_author != book.author:
-                book.author = new_author
-                update_needed = True
-            if read_status:
-                book.read = True if read_status.lower() == 'yes' else False
-                update_needed = True
-            if rating.isdigit() and 1 <= int(rating) <= 5:
-                book.rating = int(rating)
-                update_needed = True
-
-            if update_needed:
-                if not update_book_in_sheet(book, original_title):
-                    print("Failed to update the book in the Google Sheet.")
+                if update_needed:
+                    if not update_book_in_sheet(book, original_title):
+                        print("Failed to update the book in the Google Sheet.")
+                    else:
+                        print(f"Book '{book.title}' has been updated.")
                 else:
-                    print(f"Book '{book.title}' has been updated.")
+                    print("No changes were made.")
+                break  # Exit the loop after applying changes
+            elif confirm == "no":
+                print("Edit cancelled. No changes were made.")
+                break 
             else:
-                print("No changes were made.")
-        else:
-            print("Edit cancelled. No changes were made.")
-    except ValueError:
-        print("Invalid input! Please enter a valid number.")
+                print(
+                    "Please enter 'yes' or 'no' "
+                    "to confirm or cancel the changes.")
+    except ValueError as e:
+        print(f"Invalid input! {e}")
+
 
 
 def update_book_in_sheet(book, original_title):
