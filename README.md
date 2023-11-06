@@ -2,6 +2,8 @@
 BookNook is a Python-based library management system that allows users to manage their personal collection of books.
 It integrates with Google Sheets to provide a portable solution for tracking books.
 
+![BookNook](readme/booknook.png)
+
 ## Contents
 
 - [Purpose](#purpose)
