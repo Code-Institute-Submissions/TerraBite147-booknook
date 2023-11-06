@@ -25,7 +25,7 @@ sheet = client.open("booknook-library").sheet1
 
 def clear_screen():
     """Clear the terminal screen."""
-    os.system("cls")
+    os.system("clear")
 
 
 def display_options_in_columns(options):
@@ -143,6 +143,7 @@ def sort_library():
     ]
 
     display_options_in_columns(options)
+    print("5. Main Menu")
     while True:
         try:
             choice = input("\nEnter your choice: ")
@@ -518,59 +519,69 @@ def main_menu(library, view_library_fn):
             break
         else:
             print("Invalid choice. Please try again.")
+            input("\nPress enter to continue...\n")
 
 
 def view_library(library):
     """Displays all books in the library and provides library options."""
-    clear_screen()
+    while True:
+        clear_screen()
 
-    if not library:
-        print("Your library is empty!")
-    else:
-        # Prepare data for tabulate
-        table_data = []
-        headers = ["#", "Title", "Author", "Status", "Rating"]
+        if not library:
+            print("Your library is empty!")
+        else:
+            # Prepare data for tabulate
+            table_data = []
+            headers = ["#", "Title", "Author", "Status", "Rating"]
 
-        for index, book in enumerate(library, start=1):
-            read_status = "Read" if book.read else "Unread"
-            rating = book.rating if book.rating else "Unrated"
-            table_data.append(
-                [index, book.title, book.author, read_status, rating]
+            for index, book in enumerate(library, start=1):
+                read_status = "Read" if book.read else "Unread"
+                rating = book.rating if book.rating else "Unrated"
+                table_data.append(
+                    [index, book.title, book.author, read_status, rating]
                 )
 
-        print(tabulate(table_data, headers=headers, tablefmt="grid"))
+            print(tabulate(table_data, headers=headers, tablefmt="grid"))
 
-    print("\n--- Library Menu ---")
-    options = [
-        "Sort Library",
-        "Add a Book",
-        "Remove a Book",
-        "Edit a Book",
-        "Return to main menu",
-    ]
-    display_options_in_columns(options)
-    print("5. Main Menu")
+        print("\n--- Library Menu ---")
+        options = [
+            "Sort Library",
+            "Add a Book",
+            "Remove a Book",
+            "Edit a Book",
+            "Return to main menu",
+        ]
+        display_options_in_columns(options[:-1])
+        print("5. Main Menu")
 
-    choice = int(input("\nEnter your choice: \n"))
+        try:
+            choice = input("\nEnter your choice: \n")
+            if not choice.strip():
+                raise ValueError("You must enter a choice.")
+            choice = int(choice)
 
-    if choice == 1:
-        sort_library()
-    elif choice == 2:
-        add_book()
-    elif choice == 3:
-        remove_book()
-    elif choice == 4:
-        book_index = int(
-            input("Enter the number of the book you want to edit: ")
-            ) - 1
-        if 0 <= book_index < len(library):
-            edit_book(library[book_index])
-        else:
-            print("Invalid book number!")
-    elif choice == 5:
-        return
-    else:
-        print("Invalid choice!")
+            if choice == 1:
+                sort_library()
+            elif choice == 2:
+                add_book()
+            elif choice == 3:
+                remove_book()
+            elif choice == 4:
+                try:
+                    book_index = int(input("Enter the number of the book you want to edit: ")) - 1
+                    if 0 <= book_index < len(library):
+                        edit_book(library[book_index])
+                    else:
+                        print("Invalid book number!")
+                except ValueError:
+                    print("Invalid input! Please enter a number.")
+            elif choice == 5:
+                return 
+            else:
+                print("Invalid choice!")
+        except ValueError as e:
+            print(e)
+            input("Press Enter to continue...")
 
 
 if __name__ == "__main__":
