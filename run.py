@@ -104,7 +104,7 @@ class Book:
         return "{:<30} | {:<25} | {:<10} | {:<10}".format(
             f"Title: {self.title}",
             f"Author: {self.author}",
-            f"Status: {read_status}",
+            f"\nStatus: {read_status}",
             f"Rating: {rating}",
         )
 
@@ -487,10 +487,10 @@ def main_menu(library, view_library_fn):
     while True:
         clear_screen()
         print("""
- |  _ \            | |  | \ | |           | |   
+ |  _ \            | |  | \ | |           | |
  | |_) | ___   ___ | | _|  \| | ___   ___ | | __
  |  _ < / _ \ / _ \| |/ | . ` |/ _ \ / _ \| |/ /
- | |_) | (_) | (_) |   <| |\  | (_) | (_) |   < 
+ | |_) | (_) | (_) |   <| |\  | (_) | (_) |   <
  |____/ \___/ \___/|_|\_|_| \_|\___/ \___/|_|\_\ """)
         print("\n--- Personal Library Management System ---")
 
