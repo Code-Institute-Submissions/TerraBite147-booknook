@@ -99,15 +99,24 @@ def add_book_to_sheet(book):
 
 
 def remove_book_from_sheet(book_to_remove):
+    """
+    Remove a book from the Google Sheet.
+    Returns True if the book was removed successfully.
+    """
+
     try:
         values_list = sheet.get_all_values()
         data_rows = values_list[1:]
         book_index = None
         for index, row in enumerate(data_rows, start=2):
-            if row[0] == book_to_remove.title and row[1] == book_to_remove.author:
+            if (
+                row[0] == book_to_remove.title
+            ) and (
+                row[1] == book_to_remove.author
+            ):
                 book_index = index
                 break
-            
+
         if book_index:
             sheet.delete_rows(book_index)
             return True
@@ -374,7 +383,7 @@ def search_for_book(library):
                             int(input(
                                 "Enter the index of "
                                 "the book you want to edit: "
-                            ))
+                            )) - 1
                         )
                         if 0 <= book_index < len(matches):
                             edit_book(matches[book_index])
@@ -447,8 +456,10 @@ def about_booknook():
     clear_screen()
 
 
-def edit_book(book):
+def edit_book(book, library):
     try:
+        original_title = book.title
+
         new_title = input(
             f"Current title is '{book.title}'. Enter new title or press"
             " Enter to keep it: "
@@ -488,7 +499,6 @@ def edit_book(book):
         print(
             "Read Status: "
             f"{'Read' if read_status.lower() == 'yes' else 'Unread'}")
-        # cannot make below less than 80 characters
         print(
             f"Rating: "
             f"{rating if rating.isdigit() and 1 <= int(rating) <= 5 else 'Unchanged'}"
@@ -498,21 +508,58 @@ def edit_book(book):
 
         if confirm.lower() == "yes":
             # Apply changes if confirmed
-            if new_title:
+            update_needed = False
+            if new_title and new_title != book.title:
                 book.title = new_title
-            if new_author:
+                update_needed = True
+            if new_author and new_author != book.author:
                 book.author = new_author
-            if read_status.lower() == "yes":
-                book.read = True
-            elif read_status.lower() == "no":
-                book.read = False
+                update_needed = True
+            if read_status:
+                book.read = True if read_status.lower() == 'yes' else False
+                update_needed = True
             if rating.isdigit() and 1 <= int(rating) <= 5:
                 book.rating = int(rating)
-            print(f"Book '{book.title}' has been updated.")
+                update_needed = True
+
+            if update_needed:
+                if not update_book_in_sheet(book, original_title):
+                    print("Failed to update the book in the Google Sheet.")
+                else:
+                    print(f"Book '{book.title}' has been updated.")
+            else:
+                print("No changes were made.")
         else:
             print("Edit cancelled. No changes were made.")
     except ValueError:
         print("Invalid input! Please enter a valid number.")
+
+
+def update_book_in_sheet(book, original_title):
+    # Find the book in the sheet
+    try:
+        # Attempt to find the cell with the original title
+        cell = sheet.find(original_title)
+        if cell is None:
+            print(
+                f"Could not find the book with title '{original_title}'"
+                " to update.")
+            return False
+
+        row_number = cell.row
+
+        # Update the values in the sheet
+        sheet.update_cell(row_number, 1, book.title)
+        sheet.update_cell(row_number, 2, book.author)
+        sheet.update_cell(row_number, 3, 'Read' if book.read else 'Unread')
+        sheet.update_cell(row_number, 4, book.rating if (
+            book.rating is not None) else "")
+        return True
+    except APIError as e:
+        print(
+            "An error occurred while updating the"
+            f" book in the Google Sheet: {e}")
+        return False
 
 
 def main_menu(library, view_library_fn):
@@ -609,14 +656,14 @@ def view_library(library):
                                 "The book number cannot be blank."
                                 " Please enter a number."
                                 )
-                        book_index = int(book_index_input)
+                        book_index = int(book_index_input) - 1
                         if 0 <= book_index < len(library):
-                            edit_book(library[book_index])
-                            break  # Exit the loop after successful edit
+                            edit_book(library[book_index], library)
+                            break
                         else:
                             print("Invalid book number! Please try again.")
-                    except ValueError:
-                        print("Invalid input! Please enter a number.")
+                    except ValueError as e:
+                        print(f"Invalid input! {e}")
             elif choice == 5:
                 return  
             else:
