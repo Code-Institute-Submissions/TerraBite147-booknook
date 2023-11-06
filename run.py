@@ -25,7 +25,7 @@ sheet = client.open("booknook-library").sheet1
 
 def clear_screen():
     """Clear the terminal screen."""
-    os.system("cls")
+    os.system("clear")
 
 
 def display_options_in_columns(options):
@@ -41,20 +41,26 @@ def display_options_in_columns(options):
 
     # Display each pair of options side-by-side
     for i in range(half_length):
-        # If there's an option in the second column to pair with the first column option
         if i < len(col2):
             print(
-                f"{i+1}. {col1[i].ljust(max_length_col1 + 5)} {i+half_length+1}. {col2[i]}"
+                f"{i+1}. {col1[i].ljust(max_length_col1 + 5)}"
+                f" {i+half_length+1}. {col2[i]}"
             )
         else:
             print(f"{i+1}. {col1[i]}")
 
 
 def fetch_books_from_sheet():
-    """Fetch all books from Google Sheets and return as a list of Book objects."""
+    """
+    Fetch all books from Google Sheets
+    and return as a list of Book objects.
+    """
     rows = sheet.get_all_records()  # Returns a list of dictionaries
     books = [
-        Book(row["Title"], row["Author"], row["Status"] == "Read", row.get("Rating"))
+        Book(
+            row["Title"], row["Author"],
+            row["Status"] == "Read", row.get("Rating")
+        )
         for row in rows
     ]
     return books
@@ -63,14 +69,20 @@ def fetch_books_from_sheet():
 def add_book_to_sheet(book):
     """Add a book to the Google Sheet."""
     read_status = "Read" if book.read else "Unread"
-    sheet.append_row([book.title, book.author, read_status, book.rating or "Unrated"])
+    sheet.append_row(
+        [book.title, book.author, read_status, book.rating or "Unrated"]
+    )
+
 
 def remove_book_from_sheet(book_to_remove):
     try:
         cell = sheet.find(book_to_remove.title)
         sheet.delete_rows(cell.row)
     except APIError as e:
-        print("An error occurred while trying to remove the book from the Google Sheet:", e)
+        print((
+            "An error occurred while trying to"
+            " remove the book from the Google Sheet:", e)
+        )
 
 
 # classes
@@ -106,13 +118,12 @@ def sort_books_by_criteria(criteria):
 
     def sort_key(item):
         value = getattr(item, criteria)
-        # Treat None as a low value; adjust as required
         if value is None:
-            return (0,)  # Using a tuple so you can add more sort keys if needed
+            return (0,)
         if isinstance(value, str):
-            return (1, value)  # Strings come after None
+            return (1, value)
         if isinstance(value, (int, float)):
-            return (2, value)  # Numbers come after strings
+            return (2, value)
 
     library.sort(key=sort_key)
 
@@ -178,7 +189,9 @@ def get_read_status():
 
 def get_book_rating():
     while True:
-        rating = input("Rate the book (1-5) or type 'skip' to skip rating: ").lower()
+        rating = input((
+            "Rate the book (1-5) or type 'skip' to skip rating: "
+            )).lower()
         if rating == "skip":
             return None
         elif rating in ["1", "2", "3", "4", "5"]:
@@ -194,9 +207,10 @@ def add_book():
 
         # Check for duplicates
         if check_duplicate_book(title, author):
-            print(
-                "\nThe book with this title and author already exists in the library."
-            )
+            print((
+                "\nThe book with this title and "
+                "author already exists in the library."
+            ))
             input("\nPress enter to continue...\n")
             return
 
@@ -240,7 +254,9 @@ def remove_book():
 
     while True:
         try:
-            choice = int(input("\nEnter the number of the book you want to remove: \n"))
+            choice = int(
+                input("\nEnter the number of the book you want to remove: \n")
+                )
             if 1 <= choice <= len(library):
                 removed_book = library.pop(choice - 1)
                 break
@@ -251,17 +267,22 @@ def remove_book():
 
     while True:
         confirmation = input(
-            f"\nAre you sure you want to remove '{removed_book.title}' by {removed_book.author}? (yes/no): \n"
+            "\nAre you sure you want to remove"
+            f" '{removed_book.title}' by {removed_book.author}? (yes/no): \n"
         ).lower()
         if confirmation == "yes":
             remove_book_from_sheet(removed_book)
             print(
-                f"'{removed_book.title}' by {removed_book.author} has been removed from the library!"
+                f"'{removed_book.title}' by {removed_book.author}"
+                " has been removed from the library!"
             )
             break
         elif confirmation == "no":
-            library.insert(choice - 1, removed_book)  # Reinsert the book as it was not confirmed for deletion
-            print(f"'{removed_book.title}' by {removed_book.author} was not removed.")
+            library.insert(choice - 1, removed_book)
+            print(
+                f"'{removed_book.title}' by {removed_book.author}"
+                " was not removed."
+                )
             break
         else:
             print("Please respond with 'yes' or 'no'.")
@@ -272,7 +293,9 @@ def remove_book():
 def search_for_book(library):
     """Searches for a book by title or author."""
     while True:
-        options = ["Search by Title", "Search by Author", "Return to main menu"]
+        options = [
+            "Search by Title", "Search by Author", "Return to main menu"
+        ]
 
         print("\n--- Search Menu ---")
         for index, option in enumerate(options, start=1):
@@ -314,22 +337,34 @@ def search_for_book(library):
                     action_choice = int(action_choice)
                     if action_choice == 1:
                         book_index = (
-                            int(input("Enter the index of the book you want to edit: "))
+                            int(input(
+                                "Enter the index of "
+                                "the book you want to edit: "
+                            ))
                             - 1
                         )
                         if 0 <= book_index < len(matches):
-                            edit_book(matches[book_index])  # Pass only the book object
+                            edit_book(matches[book_index])
                         else:
                             print("Invalid index!")
 
                     elif action_choice == 2:
                         book_index = (
-                            int(input("Enter the index of the book you want to remove: ")) - 1
+                            int(input(
+                                "Enter the index of the "
+                                "book you want to remove: "
+                                )) - 1
                         )
                         if 0 <= book_index < len(matches):
                             book_to_remove = matches[book_index]
-                            library = [book for book in library if book != book_to_remove]
-                            print(f"Book '{book_to_remove.title}' has been removed from the library.")
+                            library = [
+                                book for book in library
+                                if book != book_to_remove
+                                ]
+                            print(
+                                f"Book '{book_to_remove.title}'"
+                                " has been removed from the library."
+                            )
                         else:
                             print("Invalid index!")
                     elif action_choice == 3:
@@ -354,14 +389,16 @@ def about_booknook():
     print("-" * 80)  # prints a divider line
 
     print(
-        "\nBookNook is designed to help you manage and keep track of your personal collection of books."
+        "\nBookNook is designed to help you manage and keep track of your"
+        " personal collection of books."
         "\nWith BookNook, you can:"
         "\n\n1. Manage your book collection."
         "\n2. View your entire library."
         "\n3. Record if you've read a book and rate it on a scale of 1-5."
         "\n4. Integrated with Google Sheets to ensure BookNook is portable."
         "\n5. Easily search, update, add or remove books from your collection."
-        "\n\nOur system is user-friendly and aims to make your reading journey more organized and enjoyable!"
+        "\n\nOur system is user-friendly and aims to make your reading journey"
+        " more organized and enjoyable!"
     )
 
     print("\nTechnical Details:")
@@ -369,7 +406,9 @@ def about_booknook():
     print("- Utilizes object-oriented programming principles.")
     print("- Integration capability with Google Sheets using relevant APIs.")
 
-    print("\nWe continuously aim to improve BookNook. Your feedback is valuable!")
+    print(
+        "\nWe continuously aim to improve BookNook."
+        " Your feedback is valuable!")
 
     input("\nPress Enter to return to the main menu.")
     clear_screen()
@@ -378,17 +417,20 @@ def about_booknook():
 def edit_book(book):
     try:
         new_title = input(
-            f"Current title is '{book.title}'. Enter new title or press Enter to keep it: "
+            f"Current title is '{book.title}'. Enter new title or press"
+            " Enter to keep it: "
         )
 
         new_author = input(
-            f"Current author is '{book.author}'. Enter new author or press Enter to keep it: "
+            f"Current author is '{book.author}'. Enter new author or press"
+            " Enter to keep it: "
         )
 
         # Validate read status input
         while True:
             read_status = input(
-                f"Is the book read? (current: {'Read' if book.read else 'Unread'}). Enter 'yes' or 'no': "
+                "Is the book read? (current: "
+                f"{'Read' if book.read else 'Unread'}). Enter 'yes' or 'no': "
             ).lower()
             if read_status in ["yes", "no", ""]:
                 break
@@ -398,7 +440,8 @@ def edit_book(book):
         # Validate rating input
         while True:
             rating = input(
-                "Enter your rating for the book (1-5) or press Enter to keep it: "
+                "Enter your rating for the book (1-5)"
+                " or press Enter to keep it: "
             )
             if rating.isdigit() and 1 <= int(rating) <= 5 or rating == "":
                 break
@@ -409,10 +452,15 @@ def edit_book(book):
         print("\nPlease confirm the following changes:")
         print(f"Title: {new_title if new_title else book.title}")
         print(f"Author: {new_author if new_author else book.author}")
-        print(f"Read Status: {'Read' if read_status.lower() == 'yes' else 'Unread'}")
         print(
-            f"Rating: {rating if rating.isdigit() and 1 <= int(rating) <= 5 else 'Unchanged'}"
+            "Read Status: "
+            f"{'Read' if read_status.lower() == 'yes' else 'Unread'}")
+        # cannot make below less than 80 characters
+        print(
+            f"Rating: "
+            f"{rating if rating.isdigit() and 1 <= int(rating) <= 5 else 'Unchanged'}"
         )
+
         confirm = input("Are these changes correct? (yes/no): ")
 
         if confirm.lower() == "yes":
@@ -426,7 +474,7 @@ def edit_book(book):
             elif read_status.lower() == "no":
                 book.read = False
             if rating.isdigit() and 1 <= int(rating) <= 5:
-                book.rating = int(rating)  # Cast to integer
+                book.rating = int(rating)
             print(f"Book '{book.title}' has been updated.")
         else:
             print("Edit cancelled. No changes were made.")
@@ -439,14 +487,11 @@ def main_menu(library, view_library_fn):
     while True:
         clear_screen()
         print("""
- ____                 _     _   _                _    
-|  _ \               | |   | \ | |              | |   
-| |_) |  ___    ___  | | __|  \| |  ___    ___  | | __
-|  _ <  / _ \  / _ \ | |/ /| . ` | / _ \  / _ \ | |/ /
-| |_) || (_) || (_) ||   < | |\  || (_) || (_) ||   < 
-|____/  \___/  \___/ |_|\_\|_| \_| \___/  \___/ |_|\_\.
-              """)
-        
+ |  _ \            | |  | \ | |           | |   
+ | |_) | ___   ___ | | _|  \| | ___   ___ | | __
+ |  _ < / _ \ / _ \| |/ | . ` |/ _ \ / _ \| |/ /
+ | |_) | (_) | (_) |   <| |\  | (_) | (_) |   < 
+ |____/ \___/ \___/|_|\_|_| \_|\___/ \___/|_|\_\ """)
         print("\n--- Personal Library Management System ---")
 
         options = ["View Library", "Search for a Book", "About", "Exit"]
@@ -467,7 +512,8 @@ def main_menu(library, view_library_fn):
             about_booknook()
         elif choice == 4:
             print(
-                "Exiting... Thank you for using the Personal Library Management System!"
+                "Exiting... Thank you for using the Personal"
+                " Library Management System!"
             )
             break
         else:
@@ -488,7 +534,9 @@ def view_library(library):
         for index, book in enumerate(library, start=1):
             read_status = "Read" if book.read else "Unread"
             rating = book.rating if book.rating else "Unrated"
-            table_data.append([index, book.title, book.author, read_status, rating])
+            table_data.append(
+                [index, book.title, book.author, read_status, rating]
+                )
 
         print(tabulate(table_data, headers=headers, tablefmt="grid"))
 
@@ -512,7 +560,9 @@ def view_library(library):
     elif choice == 3:
         remove_book()
     elif choice == 4:
-        book_index = int(input("Enter the number of the book you want to edit: ")) - 1
+        book_index = int(
+            input("Enter the number of the book you want to edit: ")
+            ) - 1
         if 0 <= book_index < len(library):
             edit_book(library[book_index])
         else:
