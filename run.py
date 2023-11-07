@@ -182,6 +182,7 @@ def sort_library():
     sort_criteria = ["title", "author", "read", "rating"]
 
     if choice in [1, 2, 3, 4]:
+        clear_screen()
         sort_books_by_criteria(sort_criteria[choice - 1])
         view_library(library)
     elif choice == 5:
