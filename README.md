@@ -4,6 +4,8 @@ It integrates with Google Sheets to provide a portable solution for tracking boo
 
 ![BookNook](readme/booknook.png)
 
+BookNook is deployed on Heroku [BookNook](https://booknook-afb7e122162f.herokuapp.com/).
+
 ## Contents
 
 - [Purpose](#purpose)
@@ -196,6 +198,22 @@ The exit feature allows the user to exit the program.
     - The project uses **Visual Studio Code** as the IDE.
 
 ## Testing
+### Linter Testing
+The program was tested using [CI Python Linter](https://pep8ci.herokuapp.com/). 
+
+The program passed with errors in the Ascii art used for the Title.
+This is due to using \ which creates invalid escape sequence errors.
+
+The other error comes from line 517 
+            print(
+                f"Rating: "
+                # Unable to shorten below line to less than 80 characters
+                # due to f-string formatting
+517             f"{rating if rating.isdigit() and 1 <= int(rating) <= 5 else 'Unchanged'}"
+            )
+I was unable to shorten the line below 80 characters due to f-string formatting.
+
+
 
 ### Manual Testing
 #### Test 1: Main Menu

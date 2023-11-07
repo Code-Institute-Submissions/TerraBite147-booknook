@@ -512,6 +512,8 @@ def edit_book(book, library):
         # Cannot split below into less than 80 characters
             print(
                 f"Rating: "
+                # Unable to shorten below line to less than 80 characters
+                # due to f-string formatting
                 f"{rating if rating.isdigit() and 1 <= int(rating) <= 5 else 'Unchanged'}"
             )
 
@@ -543,7 +545,7 @@ def edit_book(book, library):
                 break  # Exit the loop after applying changes
             elif confirm == "no":
                 print("Edit cancelled. No changes were made.")
-                break 
+                break
             else:
                 print(
                     "Please enter 'yes' or 'no' "
@@ -682,7 +684,7 @@ def view_library(library):
                     except ValueError as e:
                         print(f"Invalid input! {e}")
             elif choice == 5:
-                return  
+                return
             else:
                 print("Invalid choice!")
         except ValueError as e:
