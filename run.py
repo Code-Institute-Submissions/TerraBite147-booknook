@@ -49,7 +49,7 @@ class Book:
 
 def clear_screen():
     """Clear the terminal screen."""
-    os.system("clear")
+    os.system("cls" if os.name == "nt" else "clear")
 
 
 def display_options_in_columns(options):
@@ -607,6 +607,7 @@ def main_menu(library, view_library_fn):
         if choice == 1:
             view_library_fn(library)
         elif choice == 2:
+            clear_screen()
             search_for_book(library)
         elif choice == 3:
             about_booknook()
@@ -685,6 +686,7 @@ def view_library(library):
                     except ValueError as e:
                         print(f"Invalid input! {e}")
             elif choice == 5:
+                clear_screen()
                 return
             else:
                 print("Invalid choice!")
