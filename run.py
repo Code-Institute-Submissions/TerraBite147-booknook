@@ -510,7 +510,6 @@ def edit_book(book, library):
                 "Read Status: "
                 f"{'Read' if read_status == 'yes' else 'Unread'}"
             )
-        # Cannot split below into less than 80 characters
             print(
                 f"Rating: "
                 # Unable to shorten below line to less than 80 characters

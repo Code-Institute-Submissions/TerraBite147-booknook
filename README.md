@@ -216,275 +216,363 @@ I was unable to shorten the line below 80 characters due to f-string formatting.
 
 
 ### Manual Testing
-#### Test 1: Main Menu
-1. Run the program.
-2. The main menu is displayed.
-3. Press 1 to view the library.
-4. The library is displayed.
-5. Press 2 to search for a book.
-6. The search for a book menu is displayed.
-7. Restart the program.
-8. The main menu is displayed.
-9. Press 3 to view the about page.
-10. The about page is displayed.
-11. Press enter.
-12. The main menu is displayed.
-13. Press 4 to exit the program.
-14. The program exits.
+---
+
+#### Test 1 : Main Menu
+
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1    | Run the program. | Program starts. |
+| 2    | The main menu is displayed. | Main menu options are shown. |
+| 3    | Press 1 to view the library. | Library view is displayed. |
+| 4    | The library is displayed. | List of books in the library is shown. |
+| 5    | Press 2 to search for a book. | Search menu is displayed. |
+| 6    | The search for a book menu is displayed. | Options for searching a book are shown. |
+| 7    | Restart the program. | Program restarts. |
+| 8    | The main menu is displayed. | Main menu options are shown again. |
+| 9    | Press 3 to view the about page. | About page is displayed. |
+| 10   | The about page is displayed. | Information about the program is shown. |
+| 11   | Press enter. | Returns to the main menu. |
+| 12   | The main menu is displayed. | Main menu options are shown. |
+| 13   | Press 4 to exit the program. | Program exits. |
+| 14   | The program exits. | Program closes successfully. |
+
+---
+
+#### Test 2 : Main Menu Error Handling
+
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1    | Run the program. | Program starts. |
+| 2    | The main menu is displayed. | Main menu options are shown. |
+| 3    | Press 5. | Error message for invalid choice. |
+| 4    | User gets "Invalid choice. Please try again." | Prompt to try again. |
+| 5    | Press enter to try again. | Allows retry. |
+| 6    | Press 0. | Error message for invalid choice. |
+| 7    | User gets "Invalid choice. Please try again." | Prompt to try again. |
+| 8    | Press enter to try again. | Allows retry. |
+| 9    | Press 'a'. | Error message for invalid choice. |
+| 10   | User gets "Invalid choice. Please try again." | Prompt to try again. |
+| 11   | Press enter to try again. | Allows retry. |
+| 12   | Press 1 to view the library. | Library view is displayed. |
+| 13   | The library is displayed. | List of books in the library is shown. |
+
+---
+
+#### Test 3 : View Library - Sort Library
+
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1    | Run the program. | Program starts. |
+| 2    | The main menu is displayed. | Main menu options are shown. |
+| 3    | Press 1 to view the library. | Library view is displayed. |
+| 4    | The library is displayed. | List of books in the library is shown. |
+| 5    | Press 1 to sort the library. | Sorting options are displayed. |
+| 6    | Press 1 to sort by title. | Library is sorted by title. |
+| 7    | The library is sorted by title. | Books are displayed in title-sorted order. |
+| 8    | Press 1 to sort the library. | Sorting options are displayed again. |
+| 9    | Press 2 to sort by author. | Library is sorted by author. |
+| 10   | The library is sorted by author. | Books are displayed in author-sorted order. |
+| 11   | Press 1 to sort the library. | Sorting options are displayed again. |
+| 12   | Press 3 to sort by read status. | Library is sorted by read status. |
+| 13   | The library is sorted by read status. | Books are displayed in read status-sorted order. |
+| 14   | Press 1 to sort the library. | Sorting options are displayed again. |
+| 15   | Press 4 to sort by rating. | Library is sorted by rating. |
+| 16   | The library is sorted by rating. | Books are displayed in rating-sorted order. |
+
+---
+
+#### Test 4 : View Library - Sort Library Error Handling
+
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1    | Run the program. | Program starts. |
+| 2    | The main menu is displayed. | Main menu options are shown. |
+| 3    | Press 1 to view the library. | Library view is displayed. |
+| 4    | The library is displayed. | List of books in the library is shown. |
+| 5    | Press 1 to sort the library. | Sorting options are displayed. |
+| 6    | Press 5. | Error message for invalid choice. |
+| 7    | User gets "Invalid choice. Please enter a number from the options and try again." | Prompt to try again. |
+| 8    | Press 0. | Error message for invalid choice. |
+| 9    | User gets "Invalid choice. Please enter a number from the options and try again." | Prompt to try again. |
+| 10   | Press a. | Error message for invalid choice. |
+| 11   | User gets "Invalid choice. Please enter a number from the options and try again." | Prompt to try again. |
+| 12   | Press 1 to sort by title. | Library is sorted by title. |
+| 13   | The library is sorted by title. | Books are displayed in title-sorted order. |
+
+#### Test 5 : View Library - Add Book
+
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1    | Run the program. | Program starts. |
+| 2    | The main menu is displayed. | Main menu options are shown. |
+| 3    | Press 1 to view the library. | Library view is displayed. |
+| 4    | The library is displayed. | List of books in the library is shown. |
+| 5    | Press 2 to add a book. | Add book process starts. |
+| 6    | The user is prompted to enter in the title of the book. | Title input prompt is shown. |
+| 7    | Enter in the title of the book. | Title is entered. |
+| 8    | The user is prompted to enter in the author of the book. | Author input prompt is shown. |
+| 9    | Enter in the author of the book. | Author is entered. |
+| 10   | The user is prompted to enter in if they have read the book. | Read status input prompt is shown. |
+| 11   | Enter in if they have read the book. | Read status is entered. |
+| 12   | The user is prompted to enter in their rating of the book. | Rating input prompt is shown. |
+| 13   | Enter in their rating of the book. | Rating is entered. |
+| 14   | The book is added to the library. | Book is added to the library list. |
+| 15   | The book is added to the Google Sheet. | Book is added to the Google Sheet. |
+
+---
+
+#### Test 6 : View Library - Add Book Error Handling
+
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1    | Run the program. | Program starts. |
+| 2    | The main menu is displayed. | Main menu options are shown. |
+| 3    | Press 1 to view the library. | Library view is displayed. |
+| 4    | The library is displayed. | List of books in the library is shown. |
+| 5    | Press 2 to add a book. | Add book process starts. |
+| 6    | The user is prompted to enter in the title of the book. | Title input prompt is shown. |
+| 7    | Press enter. | Blank input for title. |
+| 8    | User gets "The title cannot be blank. Please enter a title" and is prompted to enter in the title of the book. | Prompt to re-enter title. |
+| 9    | Enter in the title of the book. | Title is entered. |
+| 10   | The user is prompted to enter in the author of the book. | Author input prompt is shown. |
+| 11   | Press enter. | Blank input for author. |
+| 12   | User gets "The author cannot be blank. Please enter an author" and is prompted to enter in the author of the book. | Prompt to re-enter author. |
+| 13   | Enter in the author of the book. | Author is entered. |
+| 14   | The user is prompted "Have you read this book? (yes/no):" | Read status input prompt is shown. |
+| 15   | Press enter. | Blank input for read status. |
+| 16   | User gets "Invalid response. Please enter 'yes' or 'no'." and is prompted to enter in if they have read the book. | Prompt to re-enter read status. |
+| 17   | Enter in yes they have read the book. | Read status is entered. |
+| 18   | The user is prompted to enter in their rating of the book. | Rating input prompt is shown. |
+| 19   | Press enter. | Blank input for rating. |
+| 20   | User gets "Invalid rating. Please choose between 1-5 or type 'skip'." and is prompted to enter in their rating of the book. | Prompt to re-enter rating. |
+| 21   | Enter in their rating of the book. | Rating is entered. |
+| 22   | The book is added to the library. | Book is added to the library list. |
+| 23   | The book is added to the Google Sheet. | Book is added to the Google Sheet. |
+
+---
+
+#### Test 7 : View Library - Remove Book
+
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1    | Run the program. | Program starts. |
+| 2    | The main menu is displayed. | Main menu options are shown. |
+| 3    | Press 1 to view the library. | Library view is displayed. |
+| 4    | The library is displayed. | List of books in the library is shown. |
+| 5    | Press 3 to remove a book. | Remove book process starts. |
+| 6    | The user is prompted to enter in the index number of the book they want to remove. | Index number input prompt is shown. |
+| 7    | Enter in the index number of the book they want to remove. | Index number is entered. |
+| 8    | The user is prompted to confirm if they want to remove the book. | Confirmation prompt is shown. |
+| 9    | Enter in yes. | Confirmation for removal is entered. |
+| 10   | The book is removed from the library. | Book is removed from the library list. |
+| 11   | The book is removed from the Google Sheet. | Book is removed from the Google Sheet. |
+
+---
+
+#### Test 8: View Library - Remove Book Error Handling
+
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1    | Run the program. | Program starts. |
+| 2    | The main menu is displayed. | Main menu options are shown. |
+| 3    | Press 1 to view the library. | Library view is displayed. |
+| 4    | The library is displayed. | List of books in the library is shown. |
+| 5    | Press 3 to remove a book. | Remove book process starts. |
+| 6    | The user is prompted to enter in the index number of the book they want to remove. | Index number input prompt is shown. |
+| 7    | Press enter. | Blank input for index number. |
+| 8    | User gets "Please enter a valid number. Enter the number of the book you want to remove:" | Prompt to re-enter index number. |
+| 9    | Enter in the index number of the book they want to remove. | Index number is entered. |
+| 10   | The user is prompted to confirm if they want to remove the book. | Confirmation prompt is shown. |
+| 11   | Press enter. | Blank input for confirmation. |
+| 12   | User gets "Please respond with 'yes' or 'no'." | Prompt to re-enter confirmation. |
+| 13   | Enter in yes. | Confirmation for removal is entered. |
+| 14   | The book is removed from the library. | Book is removed from the library list. |
+| 15   | The book is removed from the Google Sheet. | Book is removed from the Google Sheet. |
+
+---
+
+#### Test 9: View Library - Edit Book
+
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1    | Run the program. | Program starts. |
+| 2    | The main menu is displayed. | Main menu options are shown. |
+| 3    | Press 1 to view the library. | Library view is displayed. |
+| 4    | The library is displayed. | List of books in the library is shown. |
+| 5    | Press 4 to edit a book. | Edit book process starts. |
+| 6    | The user is prompted to enter in the index number of the book they want to edit. | Index number input prompt is shown. |
+| 7    | Enter in the index number of the book they want to edit. | Index number is entered. |
+| 8    | The user is prompted to enter in the new title of the book. | New title input prompt is shown. |
+| 9    | Enter in the new title of the book. | New title is entered. |
+| 10   | The user is prompted to enter in the new author of the book. | New author input prompt is shown. |
+| 11   | Enter in the new author of the book. | New author is entered. |
+| 12   | The user is prompted to enter in if they have read the book. | New read status input prompt is shown. |
+| 13   | Enter in if they have read the book. | New read status is entered. |
+| 14   | The user is prompted to enter in their new rating of the book. | New rating input prompt is shown. |
+| 15   | Enter in their new rating of the book. | New rating is entered. |
+| 16   | The user is prompted to confirm if they want to edit the book. | Confirmation prompt is shown. |
+| 17   | Enter in yes. | Confirmation for edit is entered. |
+| 18   | The book is edited in the library. | Book is edited in the library list. |
+| 19   | The book is edited in the Google Sheet. | Book is edited in the Google Sheet. |
+
+---
+
+#### Test 10: View Library - Edit Book Error Handling
+
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1    | Run the program. | Program starts. |
+| 2    | The main menu is displayed. | Main menu options are shown. |
+| 3    | Press 1 to view the library. | Library view is displayed. |
+| 4    | The library is displayed. | List of books in the library is shown. |
+| 5    | Press 4 to edit a book. | Edit book process starts. |
+| 6    | The user is prompted to enter in the index number of the book they want to edit. | Index number input prompt is shown. |
+| 7    | Press enter. | Blank input for index number. |
+| 8    | User gets "Invalid input! The book number cannot be blank. Please enter a number." | Prompt to re-enter index number. |
+| 9    | Enter in the index number of the book they want to edit. | Index number is entered. |
+| 10   | The user is prompted with "Current title is 'BOOK TITLE'. Enter new title or press Enter to keep it:" | Title edit prompt is shown. |
+| 11   | Press enter. | Keeps current title. |
+| 12   | The user is prompted with "Current author is 'BOOK AUTHOR'. Enter new author or press Enter to keep it:" | Author edit prompt is shown. |
+| 13   | Press enter. | Keeps current author. |
+| 14   | The user is prompted with "Is the book read? (current: Read). Enter 'yes' or 'no':" | Read status edit prompt is shown. |
+| 15   | Press enter. | Keeps current read status. |
+| 16   | The user is prompted with "Current rating is 'BOOK RATING'. Enter new rating or press Enter to keep it:" | Rating edit prompt is shown. |
+| 17   | Press enter. | Keeps current rating. |
+| 18   | The user is prompted "Are these changes correct? press Enter to discard changes (yes/no):" | Confirmation prompt is shown. |
+| 19   | Press enter. | Blank input for confirmation. |
+| 20   | User gets "Invalid response. Please enter 'yes' or 'no'." | Prompt to re-enter confirmation. |
+| 21   | The user is prompted "Are these changes correct? press Enter to discard changes (yes/no):" | Confirmation prompt is shown again. |
+| 22   | Enter in yes. | Confirmation for edit is entered. |
+| 23   | The book is edited in the library. | Book is edited in the library list. |
+| 24   | The book is edited in the Google Sheet. | Book is edited in the Google Sheet. |
+
+---
+
+#### Test 11: Search for a Book - Search by Title
+
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1    | Run the program. | Program starts. |
+| 2    | The main menu is displayed. | Main menu options are shown. |
+| 3    | Press 2 to search for a book. | Search for a book menu is displayed. |
+| 4    | The search for a book menu is displayed. | Search options are shown. |
+| 5    | Press 1 to search by title. | Search by title process starts. |
+| 6    | The user is prompted to enter in the title of the book they want to search for. | Title input prompt is shown. |
+| 7    | Enter in the title of the book they want to search for. | Title is entered. |
+| 8    | The book is displayed. | Book details are shown. |
+| 9    | The user is prompted to edit or remove the book or return to the main menu. | Options for edit, remove, or return are shown. |
+| 10   | Press 1 to edit the book. | Edit book process starts. |
+| 11   | The user is prompted to enter in the new title of the book. | New title input prompt is shown. |
+| 12   | Enter in the new title of the book. | New title is entered. |
+| 13   | The user is prompted to enter in the new author of the book. | New author input prompt is shown. |
+| 14   | Enter in the new author of the book. | New author is entered. |
+| 15   | The user is prompted to enter in if they have read the book. | New read status input prompt is shown. |
+| 16   | Enter in if they have read the book. | New read status is entered. |
+| 17   | The user is prompted to enter in their new rating of the book. | New rating input prompt is shown. |
+| 18   | Enter in their new rating of the book. | New rating is entered. |
+| 19   | The user is prompted to confirm if they want to edit the book. | Confirmation prompt is shown. |
+| 20   | Enter in yes. | Confirmation for edit is entered. |
+| 21   | The book is edited in the library. | Book is edited in the library list. |
+| 22   | The book is edited in the Google Sheet. | Book is edited in the Google Sheet. |
+| 23   | The user is prompted to edit or remove the book or return to the main menu. | Options for edit, remove, or return are shown. |
+| 24   | Press 2 to remove the book. | Remove book process starts. |
+| 25   | The user is prompted to confirm if they want to remove the book. | Confirmation prompt is shown. |
+| 26   | Enter in yes. | Confirmation for removal is entered. |
+| 27   | The book is removed from the library. | Book is removed from the library list. |
+| 28   | The book is removed from the Google Sheet. | Book is removed from the Google Sheet. |
+| 29   | The user is prompted to edit or remove the book or return to the main menu. | Options for edit, remove, or return are shown. |
+| 30   | Press 3 to return to the main menu. | Return to main menu process starts. |
+| 31   | The main menu is displayed. | Main menu options are shown. |
 
 
-#### Test 2: Main Menu Error Handling
-1. Run the program.
-2. The main menu is displayed.
-3. Press 5.
-4. User gets Invalid choice. Please try again.
-5. Press enter to try again.
-6. Press 0.
-7. User gets Invalid choice. Please try again.
-8. Press enter to try again.
-9. Press a.
-10. User gets Invalid choice. Please try again.
-11. Press enter to try again.
-12. Press 1 to view the library.
-13. The library is displayed.
+#### Test 12: Search for a Book - Search by Title Error Handling
 
-#### Test 3: View Library - Sort Library
-1. Run the program.
-2. The main menu is displayed.
-3. Press 1 to view the library.
-4. The library is displayed.
-5. Press 1 to sort the library
-6. Press 1 to sort by title.
-7. The library is sorted by title.
-8. Press 1 to sort the library.
-9. Press 2 to sort by author.
-10. The library is sorted by author.
-11. Press 1 to sort the library.
-12. Press 3 to sort by read status.
-13. The library is sorted by read status.
-14. Press 1 to sort the library.
-15. Press 4 to sort by rating.
-16. The library is sorted by rating.
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1    | Run the program. | Program starts. |
+| 2    | The main menu is displayed. | Main menu options are shown. |
+| 3    | Press 2 to search for a book. | Search for a book menu is displayed. |
+| 4    | The search for a book menu is displayed. | Search options are shown. |
+| 5    | Press 1 to search by title. | Search by title process starts. |
+| 6    | The user is prompted to enter in the title of the book they want to search for. | Title input prompt is shown. |
+| 7    | Press enter. | Blank input for title search. |
+| 8    | Entire library is displayed. | All books in the library are shown. |
+| 9    | The user is prompted to edit or remove the book or return to the main menu. | Options for edit, remove, or return are shown. |
+| 10   | Edit and Remove functions the same as the Edit Book and Remove Book features. | Consistent functionality with other features. |
 
-#### Test 4: View Library - Sort Library Error Handling
-1. Run the program.
-2. The main menu is displayed.
-3. Press 1 to view the library.
-4. The library is displayed.
-5. Press 1 to sort the library.
-6. Press 5.
-7. User gets Invalid choice. Please enter a number from the options and try again.
-8. Press 0.
-9. User gets Invalid choice. Please enter a number from the options and try again.
-10. Press a.
-11. User gets Invalid choice. Please enter a number from the options and try again.
-12. Press 1 to sort by title.
-13. The library is sorted by title.
+---
 
-#### Test 5: View Library - Add Book
-1. Run the program.
-2. The main menu is displayed.
-3. Press 1 to view the library.
-4. The library is displayed.
-5. Press 2 to add a book.
-6. The user is prompted to enter in the title of the book.
-7. Enter in the title of the book.
-8. The user is prompted to enter in the author of the book.
-9. Enter in the author of the book.
-10. The user is prompted to enter in if they have read the book.
-11. Enter in if they have read the book.
-12. The user is prompted to enter in their rating of the book.
-13. Enter in their rating of the book.
-14. The book is added to the library.
-15. The book is added to the Google Sheet.
+#### Test 13: Search for a Book - Search by Author
 
-#### Test 5: View Library - Add Book Error Handling
-1. Run the program.
-2. The main menu is displayed.
-3. Press 1 to view the library.
-4. The library is displayed.
-5. Press 2 to add a book.
-6. The user is prompted to enter in the title of the book.
-7. Press enter.
-8. User gets The title cannot be blank. Please enter a title and is prompted to enter in the title of the book.
-9. Enter in the title of the book.
-10. The user is prompted to enter in the author of the book.
-11. Press enter.
-12. User gets The author cannot be blank. Please enter an author and is prompted to enter in the author of the book.
-13. Enter in the author of the book.
-14. The user is prompted Have you read this book? (yes/no):
-15. Press enter.
-16. User gets Invalid response. Please enter 'yes' or 'no'. and is prompted to enter in if they have read the book.
-17. Enter in yes they have read the book.
-18. The user is prompted to enter in their rating of the book.
-19. Press enter.
-20. User gets Invalid rating. Please choose between 1-5 or type 'skip'. and is prompted to enter in their rating of the book.
-21. Enter in their rating of the book.
-22. The book is added to the library.
-23. The book is added to the Google Sheet.
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1    | Run the program. | Program starts. |
+| 2    | The main menu is displayed. | Main menu options are shown. |
+| 3    | Press 2 to search for a book. | Search for a book menu is displayed. |
+| 4    | The search for a book menu is displayed. | Search options are shown. |
+| 5    | Press 2 to search by author. | Search by author process starts. |
+| 6    | The user is prompted to enter in the author of the book they want to search for. | Author input prompt is shown. |
+| 7    | Enter in the author of the book they want to search for. | Author is entered. |
+| 8    | The book is displayed. | Book details are shown. |
+| 9    | The user is prompted to edit or remove the book or return to the main menu. | Options for edit, remove, or return are shown. |
+| 10   | Edit and Remove functions the same as the Edit Book and Remove Book features. | Consistent functionality with other features. |
 
-#### Test 6: View Library - Remove Book
-1. Run the program.
-2. The main menu is displayed.
-3. Press 1 to view the library.
-4. The library is displayed.
-5. Press 3 to remove a book.
-6. The user is prompted to enter in the index number of the book they want to remove.
-7. Enter in the index number of the book they want to remove.
-8. The user is prompted to confirm if they want to remove the book.
-9. Enter in yes.
-10. The book is removed from the library.
-11. The book is removed from the Google Sheet.
+---
 
-#### Test 6: View Library - Remove Book Error Handling
-1. Run the program.
-2. The main menu is displayed.
-3. Press 1 to view the library.
-4. The library is displayed.
-5. Press 3 to remove a book.
-6. The user is prompted to enter in the index number of the book they want to remove.
-7. Press enter.
-8. User gets Please enter a valid number. Enter the number of the book you want to remove:
-9. Enter in the index number of the book they want to remove.
-10. The user is prompted to confirm if they want to remove the book.
-11. Press enter.
-12. User gets Please respond with 'yes' or 'no'.
-13. Enter in yes.
-14. The book is removed from the library.
-15. The book is removed from the Google Sheet.
+#### Test 14: Search for a Book - Search by Author Error Handling
 
-#### Test 7: View Library - Edit Book
-1. Run the program.
-2. The main menu is displayed.
-3. Press 1 to view the library.
-4. The library is displayed.
-5. Press 4 to edit a book.
-6. The user is prompted to enter in the index number of the book they want to edit.
-7. Enter in the index number of the book they want to edit.
-8. The user is prompted to enter in the new title of the book.
-9. Enter in the new title of the book.
-10. The user is prompted to enter in the new author of the book.
-11. Enter in the new author of the book.
-12. The user is prompted to enter in if they have read the book.
-13. Enter in if they have read the book.
-14. The user is prompted to enter in their new rating of the book.
-15. Enter in their new rating of the book.
-16. The user is prompted to confirm if they want to edit the book.
-17. Enter in yes.
-18. The book is edited in the library.
-19. The book is edited in the Google Sheet.
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1    | Run the program. | Program starts. |
+| 2    | The main menu is displayed. | Main menu options are shown. |
+| 3    | Press 2 to search for a book. | Search for a book menu is displayed. |
+| 4    | The search for a book menu is displayed. | Search options are shown. |
+| 5    | Press 2 to search by author. | Search by author process starts. |
+| 6    | The user is prompted to enter in the author of the book they want to search for. | Author input prompt is shown. |
+| 7    | Press enter. | Blank input for author search. |
+| 8    | Entire library is displayed. | All books in the library are shown. |
+| 9    | The user is prompted to edit or remove the book or return to the main menu. | Options for edit, remove, or return are shown. |
+| 10   | Edit and Remove functions the same as the Edit Book and Remove Book features. | Consistent functionality with other features. |
 
-#### Test 7: View Library - Edit Book Error Handling
-1. Run the program.
-2. The main menu is displayed.
-3. Press 1 to view the library.
-4. The library is displayed.
-5. Press 4 to edit a book.
-6. The user is prompted to enter in the index number of the book they want to edit.
-7. Press enter.
-8. User gets Invalid input! The book number cannot be blank. Please enter a number.
-9. Enter in the index number of the book they want to edit.
-10. The user is prompted with Current title is 'BOOK TITLE'. Enter new title or press Enter to keep it:
-11. Press enter.
-12. The user is prompted with Current author is 'BOOK AUTHOR'. Enter new author or press Enter to keep it:
-13. Press enter.
-14. The user is prompted with Is the book read? (current: Read). Enter 'yes' or 'no':
-15. Press enter.
-16. The user is prompted with Current rating is 'BOOK RATING'. Enter new rating or press Enter to keep it:
-17. Press enter.
-18. The user is prompted Are these changes correct? press Enter to discard changes (yes/no): 
-19. Press enter.
-20. User gets Invalid response. Please enter 'yes' or 'no'.
-21. The user is prompted Are these changes correct? press Enter to discard changes (yes/no):
-22. Enter in yes.
-23. The book is edited in the library.
-24. The book is edited in the Google Sheet.
+---
 
-#### Test 8: Search for a Book - Search by Title
-1. Run the program.
-2. The main menu is displayed.
-3. Press 2 to search for a book.
-4. The search for a book menu is displayed.
-5. Press 1 to search by title.
-6. The user is prompted to enter in the title of the book they want to search for.
-7. Enter in the title of the book they want to search for.
-8. The book is displayed.
-9. The user is prompted to edit or remove the book or return to the main menu.
-10. Press 1 to edit the book.
-11. The user is prompted to enter in the new title of the book.
-12. Enter in the new title of the book.
-13. The user is prompted to enter in the new author of the book.
-14. Enter in the new author of the book.
-15. The user is prompted to enter in if they have read the book.
-16. Enter in if they have read the book.
-17. The user is prompted to enter in their new rating of the book.
-18. Enter in their new rating of the book.
-19. The user is prompted to confirm if they want to edit the book.
-20. Enter in yes.
-21. The book is edited in the library.
-22. The book is edited in the Google Sheet.
-23. The user is prompted to edit or remove the book or return to the main menu.
-24. Press 2 to remove the book.
-25. The user is prompted to confirm if they want to remove the book.
-26. Enter in yes.
-27. The book is removed from the library.
-28. The book is removed from the Google Sheet.
-29. The user is prompted to edit or remove the book or return to the main menu.
-30. Press 3 to return to the main menu.
-31. The main menu is displayed.
+#### Test 15: About
 
-#### Test 8: Search for a Book - Search by Title Error Handling
-1. Run the program.
-2. The main menu is displayed.
-3. Press 2 to search for a book.
-4. The search for a book menu is displayed.
-5. Press 1 to search by title.
-6. The user is prompted to enter in the title of the book they want to search for.
-7. Press enter.
-8. Entire library is displayed.
-9. The user is prompted to edit or remove the book or return to the main menu.
-10. Edit and Remove functions the same as the Edit Book and Remove Book features.
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1    | Run the program. | Program starts. |
+| 2    | The main menu is displayed. | Main menu options are shown. |
+| 3    | Press 3 to view the about page. | About page process starts. |
+| 4    | The about page is displayed. | About page content is shown. |
+| 5    | Press enter. | Return to main menu process starts. |
+| 6    | The main menu is displayed. | Main menu options are shown. |
 
-#### Test 9: Search for a Book - Search by Author
-1. Run the program.
-2. The main menu is displayed.
-3. Press 2 to search for a book.
-4. The search for a book menu is displayed.
-5. Press 2 to search by author.
-6. The user is prompted to enter in the author of the book they want to search for.
-7. Enter in the author of the book they want to search for.
-8. The book is displayed.
-9. The user is prompted to edit or remove the book or return to the main menu.
-10. Edit and Remove functions the same as the Edit Book and Remove Book features.
+---
 
-#### Test 9: Search for a Book - Search by Author Error Handling
-1. Run the program.
-2. The main menu is displayed.
-3. Press 2 to search for a book.
-4. The search for a book menu is displayed.
-5. Press 2 to search by author.
-6. The user is prompted to enter in the author of the book they want to search for.
-7. Press enter.
-8. Entire library is displayed.
-9. The user is prompted to edit or remove the book or return to the main menu.
-10. Edit and Remove functions the same as the Edit Book and Remove Book features.
+#### Test 16: Exit
 
-#### Test 10: About
-1. Run the program.
-2. The main menu is displayed.
-3. Press 3 to view the about page.
-4. The about page is displayed.
-5. Press enter.
-6. The main menu is displayed.
-
-#### Test 11: Exit
-1. Run the program.
-2. The main menu is displayed.
-3. Press 4 to exit the program.
-4. The program exits.
-
+| Step | Action | Expected Result |
+|------|--------|-----------------|
+| 1    | Run the program. | Program starts. |
+| 2    | The main menu is displayed. | Main menu options are shown. |
+| 3    | Press 4 to exit the program. | Exit process starts. |
+| 4    | The program exits. | Program closes. |
 ### Bugs
 
+Minor bugs found with error handling not working as intended.
+
+#### unfixed Bug 1
+The when the library is sorted part of the previous library list is still visible.
+This only happens in heroku and not in gitpod or when running the program locally.
+
+I tried looking at other projects to see if they had the same issue but I was unable to find any solutions.
+
+my code for the sort library function is as follows:
+```python
+def clear_screen():
+    """Clear the terminal screen."""
+    os.system("cls" if os.name == "nt" else "clear")
 
 ## Deployment
 ### Heroku
@@ -553,7 +641,7 @@ I followed the steps in a video from the [Code Institute](https://codeinstitute.
 
 ### Content
 - The code for the main menu was adapted from the [Code Institute](https://codeinstitute.net/global/) Love Sandwiches project.
-- The code for the search function was helped by [ChatGPT](https://chat.openai.com/) as finding a clear solution was difficult. 
+- [ChatGPT](https://chat.openai.com/) was used to better explain certain parts of code. 
 - The content in the spread sheet was generated using [Random Book Generator](https://www.randomlists.com/random-books)
 
 
