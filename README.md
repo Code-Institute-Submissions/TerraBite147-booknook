@@ -573,6 +573,11 @@ my code for the sort library function is as follows:
 def clear_screen():
     """Clear the terminal screen."""
     os.system("cls" if os.name == "nt" else "clear")
+```
+Attempted to try just using os.system("clear") but this had no change.
+
+![Alt text](readme/bug1.png)
+
 
 ## Deployment
 ### Heroku
